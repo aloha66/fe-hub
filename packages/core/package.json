@@ -1,0 +1,14 @@
+{
+  "name": "@fe-tool/core",
+  "version": "0.0.1",
+  "private": true,
+  "description": "",
+  "author": "aloha66",
+  "license": "MIT",
+  "keywords": [],
+  "sideEffects": false,
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

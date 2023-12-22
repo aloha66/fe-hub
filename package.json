@@ -1,0 +1,41 @@
+{
+  "name": "@fe-tool/monorepo",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@8.11.0",
+  "description": "",
+  "author": "aloha66",
+  "license": "MIT",
+  "keywords": [],
+  "main": "index.js",
+  "scripts": {
+    "dev": "nr docs",
+    "docs": "vitepress dev packages --port 4000",
+    "test": "vitest",
+    "lint": "eslint --cache .",
+    "lint:fix": "eslint --cache . --fix"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^2.4.6",
+    "@types/node": "^20.10.5",
+    "bumpp": "^9.2.1",
+    "eslint": "^8.56.0",
+    "fast-glob": "^3.3.2",
+    "fs-extra": "^11.2.0",
+    "happy-dom": "^12.10.3",
+    "rollup": "^4.9.1",
+    "taze": "^0.13.0",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.10",
+    "vite-plugin-mkcert": "^1.17.1",
+    "vitepress": "1.0.0-rc.32",
+    "vitest": "^1.0.4"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
+  }
+}
