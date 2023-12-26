@@ -10,7 +10,7 @@
   "keywords": [],
   "main": "index.js",
   "scripts": {
-    "dev": "nr docs",
+    "dev": "nr update && nr docs",
     "docs": "vitepress dev packages --port 4000",
     "test": "vitest",
     "lint": "eslint --cache .",
