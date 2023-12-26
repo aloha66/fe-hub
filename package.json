@@ -14,13 +14,17 @@
     "docs": "vitepress dev packages --port 4000",
     "test": "vitest",
     "lint": "eslint --cache .",
-    "lint:fix": "eslint --cache . --fix"
+    "lint:fix": "eslint --cache . --fix",
+    "update": "nr -C packages/metadata update && esno scripts/update.ts"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.4.6",
+    "@antfu/ni": "^0.21.12",
+    "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.10.5",
     "bumpp": "^9.2.1",
     "eslint": "^8.56.0",
+    "esno": "^4.0.0",
     "fast-glob": "^3.3.2",
     "fs-extra": "^11.2.0",
     "happy-dom": "^12.10.3",

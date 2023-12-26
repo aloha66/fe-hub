@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { DraggableCore } from '..'
+import { DraggableCore } from '.'
 
 describe('draggableCore', () => {
   it('should mounted when setElement success', () => {

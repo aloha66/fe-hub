@@ -1,1 +1,1 @@
-export * from './drag'
+export * from './useDraggableCore'
