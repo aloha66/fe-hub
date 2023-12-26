@@ -54,9 +54,3 @@ features:
 ---
 
 <Home />
-
-## 坑
-1. 开发模式刷新上了h2和协商缓存，首屏速度跟没上一样7-8s
-2. 同名（不同后缀）文件相互引用，刷新后路径打开的是源文件（不是md）
-  - useDraggableCore.ts(被其他文件引用) 和 useDraggableCore.md（引用了其他文件）
-  - 解决方案：文件分层级 doc
