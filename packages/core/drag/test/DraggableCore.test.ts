@@ -12,7 +12,6 @@ describe('draggableCore', () => {
     const dc = new DraggableCore()
 
     expect(() => dc.setElement(null)).toThrowError('el is null')
-    console.log(1)
     expect(dc.mounted).toBe(false)
   })
 

@@ -57,7 +57,6 @@ export class DraggableCore {
 
   constructor(options: DraggableCoreOptions = {}) {
     this.#options = options
-    console.log(1)
     const { disabled = false, allowAnyClick = false, handle = '', cancel = '' } = options
 
     this.#state = {
