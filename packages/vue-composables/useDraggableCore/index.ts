@@ -1,4 +1,4 @@
-import { DraggableCore } from '@fe-tool/core'
+import { DraggableCore } from '@fe-hub/core'
 import type { Ref } from 'vue'
 import { onMounted, onUnmounted, watchEffect } from 'vue'
 

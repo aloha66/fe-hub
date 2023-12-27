@@ -1,5 +1,5 @@
 {
-  "name": "@fe-tool/metadata",
+  "name": "@fe-hub/metadata",
   "type": "module",
   "version": "0.0.0",
   "private": true,
@@ -13,6 +13,6 @@
     "update": "esno scripts/update.ts"
   },
   "dependencies": {
-    "@fe-tool/core": "workspace:^"
+    "@fe-hub/core": "workspace:^"
   }
 }

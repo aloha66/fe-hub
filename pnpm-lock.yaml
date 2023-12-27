@@ -64,7 +64,7 @@ importers:
 
   packages/metadata:
     dependencies:
-      '@fe-tool/core':
+      '@fe-hub/core':
         specifier: workspace:^
         version: link:../core
 
@@ -72,7 +72,7 @@ importers:
 
   packages/vue-composables:
     dependencies:
-      '@fe-tool/core':
+      '@fe-hub/core':
         specifier: workspace:^
         version: link:../core
     devDependencies:

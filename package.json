@@ -1,5 +1,5 @@
 {
-  "name": "@fe-tool/monorepo",
+  "name": "@fe-hub/monorepo",
   "type": "module",
   "version": "0.0.0",
   "private": true,
@@ -15,7 +15,8 @@
     "test": "vitest",
     "lint": "eslint --cache .",
     "lint:fix": "eslint --cache . --fix",
-    "update": "nr -C packages/metadata update && esno scripts/update.ts"
+    "update": "nr -C packages/metadata update && esno scripts/update.ts",
+    "taze": "taze -r"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.4.6",

@@ -8,10 +8,10 @@
     "module": "esnext",
     "moduleResolution": "Bundler",
     "paths": {
-      "@fe-tool/core": ["./packages/core/index.ts"],
-      "@fe-tool/core/*": ["./packages/core/*"],
-      "@fe-tool/vue-composables": ["./packages/vue-composables/index.ts"],
-      "@fe-tool/vue-composables/*": ["./packages/vue-composables/*"]
+      "@fe-hub/core": ["./packages/core/index.ts"],
+      "@fe-hub/core/*": ["./packages/core/*"],
+      "@fe-hub/vue-composables": ["./packages/vue-composables/index.ts"],
+      "@fe-hub/vue-composables/*": ["./packages/vue-composables/*"]
     },
     "resolveJsonModule": true,
     "types": [
