@@ -10,6 +10,8 @@
     "paths": {
       "@fe-hub/core": ["./packages/core/index.ts"],
       "@fe-hub/core/*": ["./packages/core/*"],
+      "@fe-hub/shared": ["./packages/shared/index.ts"],
+      "@fe-hub/shared/*": ["./packages/shared/*"],
       "@fe-hub/vue-composables": ["./packages/vue-composables/index.ts"],
       "@fe-hub/vue-composables/*": ["./packages/vue-composables/*"]
     },

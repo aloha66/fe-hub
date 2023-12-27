@@ -60,7 +60,11 @@ importers:
         specifier: ^1.0.4
         version: 1.0.4(@types/node@20.10.5)(happy-dom@12.10.3)
 
-  packages/core: {}
+  packages/core:
+    dependencies:
+      '@fe-hub/shared':
+        specifier: workspace:^
+        version: link:../shared
 
   packages/metadata:
     dependencies:

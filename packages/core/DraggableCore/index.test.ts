@@ -27,4 +27,10 @@ describe('draggableCore', () => {
     expect(dc.state.handle).toBe(payload.handle)
     expect(dc.state.disabled).toBe(false)
   })
+
+  it('should return false when setElement twice', () => {
+    const dc = new DraggableCore()
+    dc.setElement(document.createElement('div'))
+    expect(dc.setElement(document.createElement('div'))).toBe(false)
+  })
 })
