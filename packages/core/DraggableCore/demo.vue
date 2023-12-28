@@ -18,6 +18,8 @@ const dc = new DraggableCore({
     }
   },
   onDrag(e, data) {
+    // console.log('data',data);
+
     position.value = {
       x: data.x,
       y: data.y,
@@ -38,19 +40,21 @@ onMounted(() => {
 </script>
 
 <template>
+  <!-- <Teleport to="body"> -->
   <div class="test">
     <div ref="node" class="box" :style="style">
       test
     </div>
   </div>
+  <!-- </Teleport> -->
 </template>
 
 <style>
 .test {
-  height: 200px;
+
 }
 .box {
-  position: absolute;
+  /* position: absolute; */
   width: 50px;
   height: 50px;
   border: 1px solid #000;

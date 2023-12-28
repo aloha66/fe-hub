@@ -140,7 +140,7 @@ export class DraggableCore {
       return
     }
 
-    addEvent(this.#el!, eventsFor.touch.start, this.onTouchStart)
+    addEvent(this.#el!, eventsFor.touch.start, this.onTouchStart, { passive: false })
     addEvent(this.#el!, eventsFor.touch.stop, this.onTouchEnd)
     addEvent(this.#el!, eventsFor.mouse.start, this.onMouseDown)
     addEvent(this.#el!, eventsFor.mouse.stop, this.onMouseUp)
@@ -252,6 +252,8 @@ export class DraggableCore {
       x = grid.x
       y = grid.y
     }
+
+    // console.log('this.lastX, this.lastY, x, y', this.lastX, this.lastY, x, y)
 
     // 可显式取消
     const shouldUpdate = this.#options.onDrag?.(e, createCoreData(this.lastX, this.lastY, x, y))

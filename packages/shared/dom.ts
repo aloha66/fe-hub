@@ -1,5 +1,5 @@
-export function addEvent(el: HTMLElement | Document, event: string, handler: EventListener) {
-  el.addEventListener(event, handler)
+export function addEvent(el: HTMLElement | Document, event: string, handler: EventListener, options?: boolean | AddEventListenerOptions) {
+  el.addEventListener(event, handler, options)
 }
 
 export function removeEvent(el: HTMLElement | Document, event: string, handler: EventListener) {
