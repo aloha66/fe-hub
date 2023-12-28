@@ -33,4 +33,8 @@ describe('draggableCore', () => {
     dc.setElement(document.createElement('div'))
     expect(dc.setElement(document.createElement('div'))).toBe(false)
   })
+
+  // it("should throw a error when not setElement",() => {
+
+  // })
 })

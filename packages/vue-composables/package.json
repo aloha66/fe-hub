@@ -13,8 +13,5 @@
   },
   "dependencies": {
     "@fe-hub/core": "workspace:^"
-  },
-  "devDependencies": {
-    "vue": "^3.3.12"
   }
 }
