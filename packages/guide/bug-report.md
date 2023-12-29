@@ -3,5 +3,5 @@
 2. 同名（不同后缀）文件相互引用，刷新后路径打开的是源文件（不是md）
   - useDraggableCore.ts(被其他文件引用) 和 useDraggableCore.md（引用了其他文件）
   - 解决方案：文件分层级 doc
-  - 后面不用加index
+  - 访问路径后面不用加index亦可解决
 3. 为了更简单的自动化处理，还是按照xx/index.ts的写法（不在项目结构做分层）
