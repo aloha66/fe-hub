@@ -46,7 +46,7 @@ export function getTouch(e: TouchEvent, touchIdentifier: number) {
     || (e.changedTouches && Array.from(e.changedTouches).find(touch => touch.identifier === touchIdentifier))
 }
 
-export function offsetXYFromParent(evt: Touch, offsetParent: HTMLElement, scale: number) {
+export function offsetXYFromParent(evt: Touch | MouseEvent, offsetParent: HTMLElement, scale: number) {
   const isBody = offsetParent === offsetParent.ownerDocument.body
   const offsetParentRect = isBody ? { left: 0, top: 0 } : offsetParent.getBoundingClientRect()
 

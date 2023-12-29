@@ -10,7 +10,7 @@ export function getControlPosition(e: TouchEvent, options: DraggableCoreOptions,
 
   const offsetParent = options.offsetParent || node?.offsetParent as HTMLElement || node.ownerDocument.body
 
-  return offsetXYFromParent(touchObj || e, offsetParent, options.scale!)
+  return offsetXYFromParent(touchObj || e as unknown as MouseEvent, offsetParent, options.scale!)
 }
 
 export function createCoreData(lastX: number, lastY: number, x: number, y: number) {
