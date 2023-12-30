@@ -55,3 +55,29 @@ export function offsetXYFromParent(evt: Touch | MouseEvent, offsetParent: HTMLEl
 
   return { x, y }
 }
+
+export interface Position { x: number, y: number }
+
+export interface PositionOffsetControlPosition { x: number | string, y: number | string }
+
+export function getTranslation({ x, y }: Position, positionOffset?: PositionOffsetControlPosition, unitSuffix: string) {
+  let translation = `translate(${x}${unitSuffix},${y}${unitSuffix})`
+  if (positionOffset) {
+    const defaultX = `${(typeof positionOffset.x === 'string') ? positionOffset.x : positionOffset.x + unitSuffix}`
+    const defaultY = `${(typeof positionOffset.y === 'string') ? positionOffset.y : positionOffset.y + unitSuffix}`
+    translation = `translate(${defaultX}, ${defaultY})${translation}`
+  }
+  return translation
+}
+
+export function createCSSTransform(controlPos: Position, positionOffset?: PositionOffsetControlPosition) {
+  const translation = getTranslation(controlPos, positionOffset, 'px')
+  // TODO 可能要兼容浏览器
+  return {
+    transform: translation,
+    // WebkitTransform: translation,
+    // MozTransform: translation,
+    // msTransform: translation,
+    // OTransform: translation
+  }
+}

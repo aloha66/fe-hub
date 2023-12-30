@@ -96,6 +96,10 @@ export class DraggableCore {
     this.#state = { ...this.#state, ...payload }
   }
 
+  setEvent(eventName: string, event: Function) {
+    Reflect.set(this.#options, eventName, event)
+  }
+
   constructor(options: DraggableCoreOptions = {}) {
     const { onMouseDown, onStart, onDrag, onStop } = options
     this.#options = options

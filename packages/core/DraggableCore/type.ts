@@ -1,4 +1,6 @@
-export interface ControlPosition { x: number, y: number }
+import type { Position } from '@fe-hub/shared'
+
+export type ControlPosition = Position
 
 export type DraggableData = {
   deltaX: number
