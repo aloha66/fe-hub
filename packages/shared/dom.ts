@@ -1,11 +1,3 @@
-export function addEvent(el: HTMLElement | Document, event: string, handler: EventListener, options?: boolean | AddEventListenerOptions) {
-  el.addEventListener(event, handler, options)
-}
-
-export function removeEvent(el: HTMLElement | Document, event: string, handler: EventListener) {
-  el.removeEventListener(event, handler)
-}
-
 /**
  * 检查一个元素或其任何父元素是否匹配给定的 CSS 选择器
  * @param el 待检查的元素

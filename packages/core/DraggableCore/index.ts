@@ -1,4 +1,4 @@
-import { addEvent, getTouchIdentifier, matchesSelectorAndParentsTo, removeEvent } from '@fe-hub/shared'
+import { MouseEventButtonEnum, addEvent, getTouchIdentifier, matchesSelectorAndParentsTo, removeEvent } from '@fe-hub/shared'
 import type { DraggableEventHandler } from './type'
 import { createCoreData, getControlPosition, snapToGrid } from './position'
 
@@ -172,7 +172,7 @@ export class DraggableCore {
     if (this.#state.disabled
       || !((ownerDocument.defaultView && e.target instanceof ownerDocument.defaultView.Node))
       || (this.#state.handle && !matchesSelectorAndParentsTo(e.target, this.#state.handle, this.#el!))
-      || this.#state.cancel)
+      || (this.#state.cancel && matchesSelectorAndParentsTo(e.target, this.#state.cancel, this.#el!)))
       return false
 
     return true
@@ -185,7 +185,7 @@ export class DraggableCore {
       const event = e as MouseEvent
       this.#options.onMouseDown!(event)
 
-      if (!this.#state.allowAnyClick && typeof event.button === 'number' && event.button !== 0)
+      if (!this.#state.allowAnyClick && typeof event.button === 'number' && event.button !== MouseEventButtonEnum.LEFT)
         return false
     }
 

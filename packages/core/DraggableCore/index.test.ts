@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { DraggableCore } from '.'
 
 describe('draggableCore', () => {
@@ -32,5 +32,32 @@ describe('draggableCore', () => {
     const dc = new DraggableCore()
     dc.setElement(document.createElement('div'))
     expect(dc.setElement(document.createElement('div'))).toBe(false)
+  })
+
+  describe('can not move', () => {
+    it('should not move when disabled is true', () => {
+      const dc = new DraggableCore({ disabled: true })
+      const div = document.createElement('div')
+      dc.setElement(div)
+
+      div.dispatchEvent(new MouseEvent('mousedown'))
+
+      expect(dc.dragging).toBe(false)
+      expect(dc.lastX).toBeNaN()
+      expect(dc.lastY).toBeNaN()
+    })
+
+    it('should not move when cancel has selector', () => {
+      const dc = new DraggableCore({ cancel: '.test' })
+      const div = document.createElement('div')
+      div.className = 'test'
+      dc.setElement(div)
+
+      div.dispatchEvent(new MouseEvent('mousedown'))
+
+      expect(dc.dragging).toBe(false)
+      expect(dc.lastX).toBeNaN()
+      expect(dc.lastY).toBeNaN()
+    })
   })
 })
