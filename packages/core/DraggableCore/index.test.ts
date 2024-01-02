@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
+import { MouseEventButtonEnum } from '@fe-hub/shared'
 import { DraggableCore } from '.'
 
 describe('draggableCore', () => {
@@ -32,6 +33,36 @@ describe('draggableCore', () => {
     const dc = new DraggableCore()
     dc.setElement(document.createElement('div'))
     expect(dc.setElement(document.createElement('div'))).toBe(false)
+  })
+
+  describe('allowAnyClick', () => {
+    it('should dragging is true when mousedown', () => {
+      const dc = new DraggableCore()
+      const div = document.createElement('div')
+      dc.setElement(div)
+
+      div.dispatchEvent(new MouseEvent('mousedown'))
+
+      expect(dc.dragging).toBe(true)
+    })
+
+    it('should dragging is false when right mousedown', () => {
+      const dc = new DraggableCore()
+      const div = document.createElement('div')
+      dc.setElement(div)
+
+      div.dispatchEvent(new MouseEvent('mousedown', { button: MouseEventButtonEnum.RIGHT }))
+      expect(dc.dragging).toBe(false)
+    })
+
+    it('should dragging is true when right mousedown and allowAnyClick is true', () => {
+      const dc = new DraggableCore({ allowAnyClick: true })
+      const div = document.createElement('div')
+      dc.setElement(div)
+
+      div.dispatchEvent(new MouseEvent('mousedown', { button: MouseEventButtonEnum.RIGHT }))
+      expect(dc.dragging).toBe(true)
+    })
   })
 
   describe('can not move', () => {
