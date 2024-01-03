@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import {  onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { Draggable } from './Draggable'
 
 const style = ref()
 
 const dc = new Draggable({
-
+  /**
+   * TODO 防止拖拽元素更改父节点？
+   */
+  offsetParent: document.body,
 })
 const node = ref(null)
 
 onMounted(() => {
   dc.setElement(node.value)
   dc.onStateChange((newState, newStyle) => {
-    console.log('State has been changed:', newState, newStyle)
     style.value = newStyle
   })
 })

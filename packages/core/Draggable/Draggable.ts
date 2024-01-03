@@ -60,7 +60,6 @@ export class Draggable {
   }
 
   get style() {
-    console.log('cache clear')
     return createCSSTransform(this.geTtransformOpts(), this.#state.positionOffset)
   }
 
@@ -79,6 +78,7 @@ export class Draggable {
 
   #initCore = (el: HTMLElement) => {
     this.#core.setElement(el)
+    this.#core.initState(this.#options)
     this.#core.setEvent('onStart', this.onDragStart)
     this.#core.setEvent('onDrag', this.onDrag)
     this.#core.setEvent('onStop', this.onDragStop)

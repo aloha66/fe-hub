@@ -107,8 +107,11 @@ export class DraggableCore {
     this.#options.onStart = onStart || noop
     this.#options.onDrag = onDrag || noop
     this.#options.onStop = onStop || noop
+    this.initState(options)
+  }
 
-    const { disabled = false, allowAnyClick = false, handle = '', cancel = '', scale = 1 } = options
+  initState(options: DraggableCoreOptions) {
+    const { disabled = false, allowAnyClick = false, handle = '', cancel = '', offsetParent, scale = 1 } = options
     this.#options.scale = scale
 
     this.#state = {
@@ -117,6 +120,7 @@ export class DraggableCore {
       handle,
       cancel,
       scale,
+      offsetParent,
     }
   }
 
