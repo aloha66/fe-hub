@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createCoreData } from './position'
+import { createCoreData, snapToGrid } from './position'
 
 describe('position', () => {
   it('should create CoreData with 37 0 61 144', () => {
@@ -13,5 +13,30 @@ describe('position', () => {
         "y": 144,
       }
     `)
+  })
+
+  describe('grid', () => {
+    it('should move inner grid', () => {
+      expect(snapToGrid([10, 10], 1, 5)).toMatchInlineSnapshot(`
+        [
+          0,
+          10,
+        ]
+      `)
+
+      expect(snapToGrid([10, 10], 5, 5)).toMatchInlineSnapshot(`
+        [
+          10,
+          10,
+        ]
+      `)
+
+      expect(snapToGrid([10, 10], 11, 5)).toMatchInlineSnapshot(`
+      [
+        10,
+        10,
+      ]
+    `)
+    })
   })
 })

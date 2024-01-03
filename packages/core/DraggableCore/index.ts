@@ -232,8 +232,8 @@ export class DraggableCore {
       if (grid.length !== 2)
         throw new Error('grid 长度必须等于2')
 
-      let deltaX = x - this.lastX
-      let deltaY = y - this.lastY;// 移动距离
+      let deltaX = x - this.lastX || 0 // 移动距离
+      let deltaY = y - this.lastY || 0;
 
       [deltaX, deltaY] = snapToGrid(grid, deltaX, deltaY)
       if (!deltaX && !deltaY)
@@ -272,26 +272,6 @@ export class DraggableCore {
     this.lastY = y
   }
 
-  #handleDragStopGrid(x: number, y: number) {
-    const { grid } = this.#state
-
-    // 拖动的时候已经抛出异常 这里只处理正常逻辑
-    if (Array.isArray(grid) && grid.length === 2) {
-      if (grid.length !== 2)
-        throw new Error('grid 长度必须等于2')
-
-      let deltaX = x - this.lastX || 0 // 只有这里跟handleDrag不一样
-      let deltaY = y - this.lastY || 0;
-      [deltaX, deltaY] = snapToGrid(grid, deltaX, deltaY)
-      if (!deltaX && !deltaY)
-        return { x, y }
-      return {
-        x: this.lastX + deltaX,
-        y: this.lastY + deltaY,
-      }
-    }
-  }
-
   #handleDragStop = (e: Event) => {
     if (!this.dragging)
       return
@@ -301,7 +281,7 @@ export class DraggableCore {
       return
     let { x, y } = position
 
-    const grid = this.#handleDragStopGrid(x, y)
+    const grid = this.#handleDragGrid(x, y)
     if (grid) {
       x = grid.x
       y = grid.y
