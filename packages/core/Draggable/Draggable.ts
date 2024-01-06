@@ -3,6 +3,7 @@ import type { DraggableCoreOptions } from '../DraggableCore'
 import { DraggableCore } from '../DraggableCore'
 import type { ControlPosition, DraggableEventHandler } from '../DraggableCore/type'
 import { canDragX, canDragY, createDraggableData, getBoundPosition } from '../DraggableCore/position'
+import { EventBus } from '..'
 import type { DraggableState } from './type'
 
 interface InternalState {
@@ -32,6 +33,13 @@ export type FinalState = DraggableState & InternalState
 type MergedOptions = DraggableCoreOptions & DraggableState
 
 export interface DraggableOptions extends MergedOptions { }
+
+export interface StateChangeOptions {
+  newState: unknown
+  newStyle: unknown
+}
+
+const STATECHANGE = 'stateChange'
 
 export class Draggable {
   #core: DraggableCore
@@ -65,13 +73,18 @@ export class Draggable {
 
   private stateChangeCallbacks: StateChangeCallback[] = []
 
+  #eventBus = new EventBus()
+
   onStateChange(callback: StateChangeCallback) {
-    this.stateChangeCallbacks.push(callback)
+    // this.stateChangeCallbacks.push(callback)
+
+    this.#eventBus.on(STATECHANGE, callback)
   }
 
   setState(payload: Partial<FinalState>) {
     this.#state = { ...this.#state, ...payload }
-    this.stateChangeCallbacks.forEach(callback => callback(this.#state, this.style))
+    // this.stateChangeCallbacks.forEach(callback => callback(this.#state, this.style))
+    this.#eventBus.emit(STATECHANGE, { newState: this.#state, newStyle: this.style })
   }
 
   isElementSVG = false

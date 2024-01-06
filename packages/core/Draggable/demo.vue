@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import type { StateChangeOptions } from './Draggable'
 import { Draggable } from './Draggable'
 
 const style = ref()
@@ -14,7 +15,7 @@ const node = ref(null)
 
 onMounted(() => {
   dc.setElement(node.value)
-  dc.onStateChange((newState, newStyle) => {
+  dc.onStateChange(({ newStyle }: StateChangeOptions) => {
     style.value = newStyle
   })
 })
