@@ -3,6 +3,7 @@ import type { DraggableCoreOptions } from '../DraggableCore'
 import { DraggableCore } from '../DraggableCore'
 import type { ControlPosition, DraggableEventHandler } from '../DraggableCore/type'
 import { canDragX, canDragY, createDraggableData, getBoundPosition } from '../DraggableCore/position'
+import type { Handler } from '..'
 import { EventBus } from '..'
 import type { DraggableState } from './type'
 
@@ -36,8 +37,12 @@ export interface DraggableOptions extends MergedOptions { }
 
 export interface StateChangeOptions {
   newState: unknown
-  newStyle: unknown
+  newStyle: {
+    transform: string
+  }
 }
+
+export type StateChangeHandler = Handler<StateChangeOptions>
 
 const STATECHANGE = 'stateChange'
 
@@ -71,19 +76,14 @@ export class Draggable {
     return createCSSTransform(this.geTtransformOpts(), this.#state.positionOffset)
   }
 
-  private stateChangeCallbacks: StateChangeCallback[] = []
-
   #eventBus = new EventBus()
 
-  onStateChange(callback: StateChangeCallback) {
-    // this.stateChangeCallbacks.push(callback)
-
+  onStateChange(callback: any) {
     this.#eventBus.on(STATECHANGE, callback)
   }
 
   setState(payload: Partial<FinalState>) {
     this.#state = { ...this.#state, ...payload }
-    // this.stateChangeCallbacks.forEach(callback => callback(this.#state, this.style))
     this.#eventBus.emit(STATECHANGE, { newState: this.#state, newStyle: this.style })
   }
 
