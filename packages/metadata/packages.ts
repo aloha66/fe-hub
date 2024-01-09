@@ -23,5 +23,10 @@ export const packages: PackageManifest[] = [
     description: 'vue composables',
 
   },
+  {
+    name: 'vue-components',
+    display: 'vue-components',
+    description: 'vue-components',
 
+  },
 ]

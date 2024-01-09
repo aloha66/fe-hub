@@ -12,6 +12,8 @@
       "@fe-hub/core/*": ["./packages/core/*"],
       "@fe-hub/shared": ["./packages/shared/index.ts"],
       "@fe-hub/shared/*": ["./packages/shared/*"],
+      "@fe-hub/vue-components": ["./packages/vue-components/index.ts"],
+      "@fe-hub/vue-components/*": ["./packages/vue-components/*"],
       "@fe-hub/vue-composables": ["./packages/vue-composables/index.ts"],
       "@fe-hub/vue-composables/*": ["./packages/vue-composables/*"]
     },

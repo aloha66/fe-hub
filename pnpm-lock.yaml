@@ -77,15 +77,20 @@ importers:
 
   packages/shared: {}
 
+  packages/vue-components:
+    dependencies:
+      '@fe-hub/core':
+        specifier: workspace:^
+        version: link:../core
+      '@fe-hub/vue-composables':
+        specifier: workspace:^
+        version: link:../vue-composables
+
   packages/vue-composables:
     dependencies:
       '@fe-hub/core':
         specifier: workspace:^
         version: link:../core
-    devDependencies:
-      vue:
-        specifier: ^3.3.12
-        version: 3.3.12(typescript@5.3.3)
 
 packages:
 

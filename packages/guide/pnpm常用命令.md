@@ -1,0 +1,1 @@
+pnpm add @fe-hub/vue-composables --filter @fe-hub/vue-components
