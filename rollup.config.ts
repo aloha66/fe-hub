@@ -24,17 +24,6 @@ const externals = [
   '@fe-hub/metadata',
 ]
 
-// const args = minimist(process.argv.slice(2))
-
-// const isDryRun = args.dryrun
-// async function run(bin,  args, opts = {}) {
-//   return execa(bin, args, { stdio: 'inherit', ...opts })
-// }
-// async function dryRun(bin, /** @type {ReadonlyArray<string>} */ args, /** @type {import('execa').Options} */ opts = {}) {
-//   return console.log(pico.blue(`[dryrun] ${bin} ${args.join(' ')}`), opts)
-// }
-// const runIfNotDry = isDryRun ? dryRun : run
-
 for (const { name, external } of packages) {
   const functionNames = ['index']
 
