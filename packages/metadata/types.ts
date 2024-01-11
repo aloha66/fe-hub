@@ -6,6 +6,7 @@ export interface PackageManifest {
   deprecated?: boolean
   utils?: boolean
   onlyDirectories?: boolean
+  external?: string[]
 }
 
 export interface VueUseFunction {

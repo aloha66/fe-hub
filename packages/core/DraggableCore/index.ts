@@ -73,7 +73,7 @@ export interface DraggableCoreOptions extends DraggableCoreState {
 export class DraggableCore {
   #options: DraggableCoreOptions
 
-  #state: DraggableCoreState
+  #state: DraggableCoreState = {}
   get state() {
     return this.#state
   }

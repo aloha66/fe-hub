@@ -8,6 +8,7 @@
     "module": "esnext",
     "moduleResolution": "Bundler",
     "paths": {
+      "@fe-hub/metadata": ["./packages/metadata/index.ts"],
       "@fe-hub/core": ["./packages/core/index.ts"],
       "@fe-hub/core/*": ["./packages/core/*"],
       "@fe-hub/shared": ["./packages/shared/index.ts"],
