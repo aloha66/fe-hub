@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { MouseEventButtonEnum } from '@fe-hub/shared'
 import { DraggableCore } from '.'
 

@@ -33,7 +33,8 @@ interface InternalState {
 export type FinalState = DraggableState & InternalState
 type MergedOptions = DraggableCoreOptions & DraggableState
 
-export interface DraggableOptions extends MergedOptions { }
+export interface DraggableOptions extends MergedOptions {
+}
 
 export interface StateChangeOptions {
   newState: unknown
@@ -47,15 +48,14 @@ export type StateChangeHandler = Handler<StateChangeOptions>
 const STATECHANGE = 'stateChange'
 
 export class Draggable {
+  isElementSVG = false
   #core: DraggableCore
-
   #options: DraggableOptions = {}
-
   #state: FinalState = {
     dragged: false,
     dragging: false,
     prevPropsPosition:
-            { x: 0, y: 0 },
+      { x: 0, y: 0 },
     slackX: 0,
     slackY: 0,
     x: 0,
@@ -64,52 +64,19 @@ export class Draggable {
 
   }
 
-  get controlled() {
-    return !!this.#options.position
-  }
-
-  get draggable() {
-    return !this.controlled || this.#state.dragging
-  }
-
-  get style() {
-    return createCSSTransform(this.geTtransformOpts(), this.#state.positionOffset)
-  }
-
   #eventBus = new EventBus()
-
-  onStateChange(callback: any) {
-    this.#eventBus.on(STATECHANGE, callback)
-  }
-
-  setState(payload: Partial<FinalState>) {
-    this.#state = { ...this.#state, ...payload }
-    this.#eventBus.emit(STATECHANGE, { newState: this.#state, newStyle: this.style })
-  }
-
-  isElementSVG = false
-
-  #initCore = (el: HTMLElement) => {
-    this.#core.setElement(el)
-    this.#core.initState(this.#options)
-    this.#core.setEvent('onStart', this.onDragStart)
-    this.#core.setEvent('onDrag', this.onDrag)
-    this.#core.setEvent('onStop', this.onDragStop)
-  }
-
-  setElement(el: HTMLElement | null) {
-    if (!el)
-      throw new Error('el is null')
-
-    this.#initCore(el)
-    if (typeof window.SVGElement !== 'undefined' && el instanceof window.SVGElement)
-      this.isElementSVG = true
-  }
 
   constructor(options: DraggableOptions = {}) {
     const { onStart: _onStart, onDrag: _onDrag, onStop: _onStop, ...rest } = options
     this.#core = new DraggableCore(rest)
-    const { axis = 'both', bounds = false, defaultClassName = 'react-draggable', defaultClassNameDragging = 'react-draggable-dragging', defaultClassNameDragged = 'react-draggable-dragged', defaultPosition = { x: 0, y: 0 } } = options
+    const {
+      axis = 'both',
+      bounds = false,
+      defaultClassName = 'react-draggable',
+      defaultClassNameDragging = 'react-draggable-dragging',
+      defaultClassNameDragged = 'react-draggable-dragged',
+      defaultPosition = { x: 0, y: 0 },
+    } = options
 
     const { position, onDrag, onStop, scale = 1 } = options
     this.#options = options
@@ -140,30 +107,45 @@ export class Draggable {
     })
   }
 
-  geTtransformOpts() {
-    const validPosition = this.#state.position || this.#state.defaultPosition
-    return {
-      // Set left if horizontal drag is enabled
-      x: canDragX(this.#state) && this.draggable
-        ? this.#state.x
-        : validPosition!.x,
-
-      // Set top if vertical drag is enabled
-      y: canDragY(this.#state) && this.draggable
-        ? this.#state.y
-        : validPosition!.y,
-    }
+  get controlled() {
+    return !!this.#options.position
   }
 
-  onDragStart: DraggableEventHandler = (e, coreData) => {
-    const shouldStart = this.#options.onStart?.(e, createDraggableData(this.#state, coreData))
+  get draggable() {
+    return !this.controlled || this.#state.dragging
+  }
+
+  get style() {
+    return createCSSTransform(this.#getTransformOpts(), this.#state.positionOffset)
+  }
+
+  onStateChange(callback: any) {
+    this.#eventBus.on(STATECHANGE, callback)
+  }
+
+  setState(payload: Partial<FinalState>) {
+    this.#state = { ...this.#state, ...payload }
+    this.#eventBus.emit(STATECHANGE, { newState: this.#state, newStyle: this.style })
+  }
+
+  setElement(el: HTMLElement | null) {
+    if (!el)
+      throw new Error('el is null')
+
+    this.#initCore(el)
+    if (typeof window.SVGElement !== 'undefined' && el instanceof window.SVGElement)
+      this.isElementSVG = true
+  }
+
+  onDragStart: DraggableEventHandler = (coreData, e) => {
+    const shouldStart = this.#options.onStart?.(createDraggableData(this.#state, coreData), e)
     if (shouldStart === false)
       return false
 
     this.setState({ dragging: true, dragged: true })
   }
 
-  onDrag: DraggableEventHandler = (e, coreData) => {
+  onDrag: DraggableEventHandler = (coreData, e) => {
     if (!this.#state.dragging)
       return false
 
@@ -202,7 +184,7 @@ export class Draggable {
       uiData.deltaY = newState.y - this.#state.y
     }
 
-    const shouldUpdate = this.#options.onDrag?.(e, uiData)
+    const shouldUpdate = this.#options.onDrag?.(uiData, e)
     if (shouldUpdate === false)
       return false
 
@@ -239,5 +221,28 @@ export class Draggable {
 
   destory() {
     this.setState({ dragging: false }) // prevents invariant if unmounted while dragging
+  }
+
+  #getTransformOpts() {
+    const validPosition = this.#state.position || this.#state.defaultPosition
+    return {
+      // Set left if horizontal drag is enabled
+      x: canDragX(this.#state) && this.draggable
+        ? this.#state.x
+        : validPosition!.x,
+
+      // Set top if vertical drag is enabled
+      y: canDragY(this.#state) && this.draggable
+        ? this.#state.y
+        : validPosition!.y,
+    }
+  }
+
+  #initCore = (el: HTMLElement) => {
+    this.#core.setElement(el)
+    this.#core.initState(this.#options)
+    this.#core.setEvent('onStart', this.onDragStart)
+    this.#core.setEvent('onDrag', this.onDrag)
+    this.#core.setEvent('onStop', this.onDragStop)
   }
 }

@@ -1,8 +1,15 @@
-import { MouseEventButtonEnum, addEvent, getTouchIdentifier, matchesSelectorAndParentsTo, removeEvent } from '@fe-hub/shared'
+import {
+  MouseEventButtonEnum,
+  addEvent,
+  getTouchIdentifier,
+  matchesSelectorAndParentsTo,
+  removeEvent,
+} from '@fe-hub/shared'
 import type { DraggableEventHandler } from './type'
 import { createCoreData, getControlPosition, snapToGrid } from './position'
 
-function noop() { }
+function noop() {
+}
 
 // 拖动事件的抽象名
 const eventsFor = {
@@ -60,7 +67,6 @@ export interface DraggableCoreState {
 }
 
 export interface DraggableCoreOptions extends DraggableCoreState {
-  onMouseDown?(e: Event): void
   onStart?: DraggableEventHandler
   onDrag?: DraggableEventHandler
   onStop?: DraggableEventHandler
@@ -68,37 +74,22 @@ export interface DraggableCoreOptions extends DraggableCoreState {
    * 开启PointEvent后，将取消监听touch和mouse事件（防止事件重复响应）
    */
   enablePointEvent?: boolean
+
+  onMouseDown?(e: Event): void
 }
 
 export class DraggableCore {
-  #options: DraggableCoreOptions
-
-  #state: DraggableCoreState = {}
-  get state() {
-    return this.#state
-  }
-
   /**
    * 是否挂载
    */
   mounted = false
-
   touchIdentifier?: number
-
   lastX: number = Number.NaN
   lastY: number = Number.NaN
-
   dragging = false
-
+  #options: DraggableCoreOptions
+  #state: DraggableCoreState = {}
   #el: HTMLElement | null = null
-
-  setState(payload: Partial<DraggableCoreState>) {
-    this.#state = { ...this.#state, ...payload }
-  }
-
-  setEvent(eventName: string, event: Function) {
-    Reflect.set(this.#options, eventName, event)
-  }
 
   constructor(options: DraggableCoreOptions = {}) {
     const { onMouseDown, onStart, onDrag, onStop } = options
@@ -110,8 +101,28 @@ export class DraggableCore {
     this.initState(options)
   }
 
+  get state() {
+    return this.#state
+  }
+
+  setState(payload: Partial<DraggableCoreState>) {
+    this.#state = { ...this.#state, ...payload }
+  }
+
+  setEvent(eventName: string, event: Function) {
+    Reflect.set(this.#options, eventName, event)
+  }
+
   initState(options: DraggableCoreOptions) {
-    const { disabled = false, allowAnyClick = false, handle = '', cancel = '', offsetParent, scale = 1 } = options
+    const {
+      disabled = false,
+      allowAnyClick = false,
+      handle = '',
+      cancel = '',
+      offsetParent,
+      scale = 1,
+      grid,
+    } = options
     this.#options.scale = scale
 
     this.#state = {
@@ -121,6 +132,7 @@ export class DraggableCore {
       cancel,
       scale,
       offsetParent,
+      grid,
     }
   }
 
@@ -139,6 +151,49 @@ export class DraggableCore {
   destroy() {
     this.mounted = false
     this.#unRegisterEvent()
+  }
+
+  onMouseDown = (e: Event) => {
+    dragEventFor = eventsFor.mouse // on touchscreen laptops we could switch back to mouse
+
+    return this.#handleDragStart(e)
+  }
+
+  onMouseUp = (e: Event) => {
+    dragEventFor = eventsFor.mouse
+
+    return this.#handleDragStop(e)
+  }
+
+  onPointerDown = (e: Event) => {
+    dragEventFor = eventsFor.point
+
+    return this.#handleDragStart(e)
+  }
+
+  onPointerUp = (e: Event) => {
+    dragEventFor = eventsFor.point
+
+    return this.#handleDragStop(e)
+  }
+
+  /**
+   * 元素直接调用
+   * @param e Event
+   */
+  // Same as onMouseDown (start drag), but now consider this a touch device.
+  onTouchStart = (e: Event) => {
+    // We're on a touch device now, so change the event handlers
+    dragEventFor = eventsFor.touch
+
+    return this.#handleDragStart(e)
+  }
+
+  onTouchEnd = (e: Event) => {
+    // We're on a touch device now, so change the event handlers
+    dragEventFor = eventsFor.touch
+
+    return this.#handleDragStop(e)
   }
 
   #registerEvent() {
@@ -216,7 +271,7 @@ export class DraggableCore {
       return
     const { x, y } = position
 
-    const shouldUpdate = this.#options.onStart?.(e, createCoreData(this.lastX, this.lastY, x, y))
+    const shouldUpdate = this.#options.onStart?.(createCoreData(this.lastX, this.lastY, x, y), e)
     // 可显式取消
     if (shouldUpdate === false || !this.mounted)
       return
@@ -231,21 +286,19 @@ export class DraggableCore {
 
   #handleDragGrid(x: number, y: number) {
     const { grid } = this.#state
+    if (!Array.isArray(grid))
+      return
+    if (grid.length !== 2)
+      throw new Error('grid 长度必须等于2')
 
-    if (Array.isArray(grid)) {
-      if (grid.length !== 2)
-        throw new Error('grid 长度必须等于2')
-
-      let deltaX = x - this.lastX || 0 // 移动距离
-      let deltaY = y - this.lastY || 0;
-
-      [deltaX, deltaY] = snapToGrid(grid, deltaX, deltaY)
-      if (!deltaX && !deltaY)
-        return { x, y }
-      return {
-        x: this.lastX + deltaX,
-        y: this.lastY + deltaY,
-      }
+    const deltaX = x - this.lastX || 0 // 移动距离
+    const deltaY = y - this.lastY || 0
+    const [deltaX_handled, deltaY_handled] = snapToGrid(grid, deltaX, deltaY)
+    if (!deltaX_handled && !deltaY_handled)
+      return false
+    return {
+      x: this.lastX + deltaX_handled,
+      y: this.lastY + deltaY_handled,
     }
   }
 
@@ -256,6 +309,8 @@ export class DraggableCore {
     let { x, y } = position
 
     const grid = this.#handleDragGrid(x, y)
+    if (grid === false)
+      return
     if (grid) {
       x = grid.x
       y = grid.y
@@ -264,7 +319,7 @@ export class DraggableCore {
     // console.log('this.lastX, this.lastY, x, y', this.lastX, this.lastY, x, y)
 
     // 可显式取消
-    const shouldUpdate = this.#options.onDrag?.(e, createCoreData(this.lastX, this.lastY, x, y))
+    const shouldUpdate = this.#options.onDrag?.(createCoreData(this.lastX, this.lastY, x, y), e)
     if (shouldUpdate === false || this.mounted === false) {
       // 手动停止要补一个结束事件
       this.#handleDragStop(new TouchEvent('touchend'))
@@ -291,7 +346,7 @@ export class DraggableCore {
       y = grid.y
     }
 
-    const shouldContinue = this.#options.onStop!(e, createCoreData(this.lastX, this.lastY, x, y))
+    const shouldContinue = this.#options.onStop!(createCoreData(this.lastX, this.lastY, x, y), e)
     if (shouldContinue === false || this.mounted === false)
       return false
 
@@ -305,48 +360,5 @@ export class DraggableCore {
       removeEvent(ownerDocument, dragEventFor.move, this.#handleDrag)
       removeEvent(ownerDocument, dragEventFor.stop, this.#handleDragStop)
     }
-  }
-
-  onMouseDown = (e: Event) => {
-    dragEventFor = eventsFor.mouse // on touchscreen laptops we could switch back to mouse
-
-    return this.#handleDragStart(e)
-  }
-
-  onMouseUp = (e: Event) => {
-    dragEventFor = eventsFor.mouse
-
-    return this.#handleDragStop(e)
-  }
-
-  onPointerDown = (e: Event) => {
-    dragEventFor = eventsFor.point
-
-    return this.#handleDragStart(e)
-  }
-
-  onPointerUp = (e: Event) => {
-    dragEventFor = eventsFor.point
-
-    return this.#handleDragStop(e)
-  }
-
-  /**
-   * 元素直接调用
-   * @param e Event
-   */
-  // Same as onMouseDown (start drag), but now consider this a touch device.
-  onTouchStart = (e: Event) => {
-    // We're on a touch device now, so change the event handlers
-    dragEventFor = eventsFor.touch
-
-    return this.#handleDragStart(e)
-  }
-
-  onTouchEnd = (e: Event) => {
-    // We're on a touch device now, so change the event handlers
-    dragEventFor = eventsFor.touch
-
-    return this.#handleDragStop(e)
   }
 }

@@ -9,4 +9,4 @@ export type DraggableData = {
   lastY: number
 } & ControlPosition
 
-export type DraggableEventHandler = (e: Event, data: DraggableData) => void | false
+export type DraggableEventHandler = (data: DraggableData, e: Event) => void | false

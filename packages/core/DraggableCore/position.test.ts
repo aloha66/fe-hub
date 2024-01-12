@@ -31,12 +31,19 @@ describe('position', () => {
         ]
       `)
 
-      expect(snapToGrid([10, 10], 11, 5)).toMatchInlineSnapshot(`
-      [
-        10,
-        10,
-      ]
-    `)
+      expect(snapToGrid([10, 10], -1, 0)).toMatchInlineSnapshot(`
+        [
+          -0,
+          0,
+        ]
+      `)
+
+      expect(snapToGrid([25, 25], 11, 5)).toMatchInlineSnapshot(`
+        [
+          0,
+          0,
+        ]
+      `)
     })
   })
 })

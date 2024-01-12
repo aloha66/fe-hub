@@ -16,6 +16,7 @@ useDraggableCore(el, {
   onStop: (data) => {
     position.value = data
   },
+  grid: [50, 50],
 })
 
 const style = computed(() => {
@@ -27,8 +28,15 @@ const style = computed(() => {
 
 <template>
   <div>
-    <div ref="el" :style="style">
-      拖拽
+    <div ref="el" :style="style" class="ss">
+      拖拽grid
     </div>
   </div>
 </template>
+
+<style>
+.ss {
+  border: 1px solid #000;
+  width: 100px;
+}
+</style>
