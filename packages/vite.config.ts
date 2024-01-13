@@ -1,5 +1,6 @@
 import mkcert from 'vite-plugin-mkcert'
 import { defineConfig } from 'vite'
+import UnoCSS from 'unocss/vite'
 import { MarkdownTransform } from './.vitepress/plugins/markdownTransform'
 
 export default defineConfig({
@@ -10,6 +11,7 @@ export default defineConfig({
   // },
   plugins: [
     mkcert(),
+    UnoCSS(),
     MarkdownTransform(),
   ],
 
