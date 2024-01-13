@@ -91,4 +91,48 @@ describe('draggableCore', () => {
       expect(dc.lastY).toBeNaN()
     })
   })
+
+  describe('grid', () => {
+    it('should remaining x = 0  and y = 0 when Dragging distance less than 50px', () => {
+      const dc = new DraggableCore({ grid: [50, 50] })
+      const div = document.createElement('div')
+      dc.setElement(div)
+      dc.lastX = 0
+      dc.lastY = 0
+
+      div.dispatchEvent(new MouseEvent('mousedown'))
+      div.dispatchEvent(new MouseEvent('mousemove', { clientX: 10, clientY: 10 }))
+
+      expect(dc.lastX).toBe(0)
+      expect(dc.lastY).toBe(0)
+    })
+
+    it.only('should change x = 50  and y = 50 when Dragging distance more than 50px', () => {
+      const dc = new DraggableCore({ grid: [50, 50] })
+      const div = document.createElement('div')
+      dc.setElement(div)
+      dc.lastX = 0
+      dc.lastY = 0
+
+      div.dispatchEvent(new MouseEvent('mousedown'))
+      div.ownerDocument.dispatchEvent(new MouseEvent('mousemove', { clientX: 51, clientY: 51 }))
+
+      expect(dc.lastX).toBe(50)
+      expect(dc.lastY).toBe(50)
+    })
+
+    it.only('should change x = 50  and y = 50 when Dragging distance equal 50px', () => {
+      const dc = new DraggableCore({ grid: [50, 50] })
+      const div = document.createElement('div')
+      dc.setElement(div)
+      dc.lastX = 0
+      dc.lastY = 0
+
+      div.dispatchEvent(new MouseEvent('mousedown'))
+      div.ownerDocument.dispatchEvent(new MouseEvent('mousemove', { clientX: 50, clientY: 50 }))
+
+      expect(dc.lastX).toBe(50)
+      expect(dc.lastY).toBe(50)
+    })
+  })
 })
