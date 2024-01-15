@@ -3,6 +3,8 @@ import type { Plugin } from 'vite'
 import fs from 'fs-extra'
 import { functionNames } from '../../metadata'
 
+const DIR_SRC = resolve(__dirname, '../..')
+
 export function MarkdownTransform(): Plugin {
   return {
     name: 'md-transform',
@@ -22,10 +24,14 @@ export function MarkdownTransform(): Plugin {
       const name = functionNames.find(n => n.toLowerCase() === _name.toLowerCase()) || _name
 
       if (functionNames.includes(name) && i === 'index.md') {
+        const dirname = join(DIR_SRC, pkg, name)
+        const demoPath = ['demo.vue', 'demo.client.vue'].find(i => fs.existsSync(join(dirname, i)))
+        if(!demoPath) return code
         const frontmatterEnds = code.indexOf('---\n\n')
         const firstHeader = code.search(/\n#{2,6}\s.+/)
         const sliceIndex = firstHeader < 0 ? frontmatterEnds < 0 ? 0 : frontmatterEnds + 4 : firstHeader
-        const { header } = await getFunctionMarkdown(pkg, name)
+
+        const { header } = await getFunctionMarkdown(pkg, name,demoPath)
         code = code.slice(0, sliceIndex) + header + code.slice(sliceIndex)
 
         return code
@@ -34,20 +40,19 @@ export function MarkdownTransform(): Plugin {
   }
 }
 
-const DIR_SRC = resolve(__dirname, '../..')
 
-export async function getFunctionMarkdown(pkg: string, name: string) {
-  const dirname = join(DIR_SRC, pkg, name)
-  const demoPath = ['demo.vue', 'demo.client.vue'].find(i => fs.existsSync(join(dirname, i)))
+
+export async function getFunctionMarkdown(pkg: string, name: string,demoPath:string) {
+
 
   const demoSection = `
   <script setup>
   import { defineAsyncComponent } from 'vue'
   const Demo = defineAsyncComponent(() => import('./${demoPath}'))
   </script>
-  
+
   ## Demo
-  
+
   <div>
   <ClientOnly>
     <Suspense>
@@ -58,7 +63,7 @@ export async function getFunctionMarkdown(pkg: string, name: string) {
     </Suspense>
   </ClientOnly>
   </div>
-  
+
   `
 
   return {
