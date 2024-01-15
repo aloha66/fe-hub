@@ -11,13 +11,13 @@ const style = computed(() => {
 })
 
 const dc = new DraggableCore({
-  onStart(e, data) {
+  onStart(data) {
     position.value = {
       x: data.x,
       y: data.y,
     }
   },
-  onDrag(e, data) {
+  onDrag( data) {
     // console.log('data',data);
 
     position.value = {
@@ -25,7 +25,7 @@ const dc = new DraggableCore({
       y: data.y,
     }
   },
-  onStop(e, data) {
+  onStop(data) {
     position.value = {
       x: data.x,
       y: data.y,
@@ -47,6 +47,8 @@ onMounted(() => {
     </div>
   </div>
   <!-- </Teleport> -->
+
+
 </template>
 
 <style>

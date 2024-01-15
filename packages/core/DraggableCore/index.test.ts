@@ -97,6 +97,7 @@ describe('draggableCore', () => {
       const dc = new DraggableCore({ grid: [50, 50] })
       const div = document.createElement('div')
       dc.setElement(div)
+      // 元素的初始坐标
       dc.lastX = 0
       dc.lastY = 0
 
@@ -107,7 +108,7 @@ describe('draggableCore', () => {
       expect(dc.lastY).toBe(0)
     })
 
-    it.only('should change x = 50  and y = 50 when Dragging distance more than 50px', () => {
+    it('should change x = 50  and y = 50 when Dragging distance more than 50px', () => {
       const dc = new DraggableCore({ grid: [50, 50] })
       const div = document.createElement('div')
       dc.setElement(div)
@@ -121,7 +122,7 @@ describe('draggableCore', () => {
       expect(dc.lastY).toBe(50)
     })
 
-    it.only('should change x = 50  and y = 50 when Dragging distance equal 50px', () => {
+    it('should change x = 50  and y = 50 when Dragging distance equal 50px', () => {
       const dc = new DraggableCore({ grid: [50, 50] })
       const div = document.createElement('div')
       dc.setElement(div)

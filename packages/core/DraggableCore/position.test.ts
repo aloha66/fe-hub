@@ -44,6 +44,27 @@ describe('position', () => {
           0,
         ]
       `)
+
+      expect(snapToGrid([50, 50], 10, 10)).toMatchInlineSnapshot(`
+      [
+        0,
+        0,
+      ]
+    `)
+
+      expect(snapToGrid([50, 50], 50, 50)).toMatchInlineSnapshot(`
+        [
+          50,
+          50,
+        ]
+      `)
+
+      expect(snapToGrid([50, 50], 51, 51)).toMatchInlineSnapshot(`
+      [
+        50,
+        50,
+      ]
+    `)
     })
   })
 })
