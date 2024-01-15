@@ -1,17 +1,14 @@
 import { getTouch, offsetXYFromParent } from '@fe-hub/shared'
 import type { FinalState } from '../Draggable/Draggable'
 import type { DraggableData } from './type'
-import type { DraggableCoreOptions } from '.'
+import type {  DraggableCoreState } from '.'
 
-export function getControlPosition(e: TouchEvent, options: DraggableCoreOptions, touchIdentifier?: number) {
+export function getControlPosition(e: TouchEvent, options: DraggableCoreState,node:HTMLElement, touchIdentifier?: number) {
   const touchObj = typeof touchIdentifier === 'number' ? getTouch(e, touchIdentifier) : null
   if (typeof touchIdentifier === 'number' && !touchObj)
     return null // 不是正确的点
-
-  const node = e.target as HTMLElement
-
+  
   const offsetParent = options.offsetParent || node?.offsetParent as HTMLElement || node.ownerDocument.body
-
   return offsetXYFromParent(touchObj || e as unknown as MouseEvent, offsetParent, options.scale!)
 }
 

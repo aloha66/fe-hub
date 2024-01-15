@@ -266,7 +266,7 @@ export class DraggableCore {
     this.touchIdentifier = touchIdentifier
 
     // 获取偏移量
-    const position = getControlPosition(event, this.#state, touchIdentifier)
+    const position = getControlPosition(event, this.#state,this.#el, touchIdentifier)
     if (position == null)
       return
     const { x, y } = position
@@ -303,7 +303,7 @@ export class DraggableCore {
   }
 
   #handleDrag = (e: Event) => {
-    const position = getControlPosition(e as TouchEvent, this.#state, this.touchIdentifier)
+    const position = getControlPosition(e as TouchEvent, this.#state,this.#el!, this.touchIdentifier)
     if (position == null)
       return
     let { x, y } = position
@@ -335,7 +335,7 @@ export class DraggableCore {
     if (!this.dragging)
       return
 
-    const position = getControlPosition(e as TouchEvent, this.#state, this.touchIdentifier)
+    const position = getControlPosition(e as TouchEvent, this.#state,this.#el!, this.touchIdentifier)
     if (position == null)
       return
     let { x, y } = position
