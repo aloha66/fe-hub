@@ -13,7 +13,7 @@
     "build": "nr update && esno scripts/build-run.ts",
     "build:rollup": "cross-env NODE_OPTIONS=\"--max-old-space-size=6144\" rollup --config=rollup.config.ts --configPlugin=rollup-plugin-esbuild",
     "clean": "rimraf --glob dist types \"packages/*/dist\"",
-    "clean:node_modules": "rimraf **/node_modules",
+    "clean:node_modules": "rimraf --glob node_modules",
     "dev": "nr update && nr docs",
     "docs": "vitepress dev packages --port 4000",
     "lint": "eslint --cache .",
