@@ -1,7 +1,7 @@
-import type { DraggableOptions, StateChangeOptions } from '@fe-hub/core'
+import type { DraggableOptions, DraggableState, StateChangeOptions } from '@fe-hub/core'
 import { Draggable } from '@fe-hub/core'
 import type { Ref } from 'vue'
-import { onMounted, onUnmounted, ref, watchEffect } from 'vue'
+import { onMounted, onUnmounted, ref, watch, watchEffect } from 'vue'
 
 export function useDraggable(el: Ref<HTMLElement | null>, options: DraggableOptions = {}) {
   const da = new Draggable(options)
@@ -19,11 +19,15 @@ export function useDraggable(el: Ref<HTMLElement | null>, options: DraggableOpti
   onUnmounted(() => {
     da.destory()
   })
-  watchEffect(() => {
 
-  })
+  function setState(newState: Partial<DraggableState>) {
+    da.setState(newState)
+  }
+
+
 
   return {
     style,
+    setState
   }
 }

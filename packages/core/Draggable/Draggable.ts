@@ -125,6 +125,7 @@ export class Draggable {
 
   setState(payload: Partial<FinalState>) {
     this.#state = { ...this.#state, ...payload }
+    this.#core.setState(this.#state)
     this.#eventBus.emit(STATECHANGE, { newState: this.#state, newStyle: this.style })
   }
 
