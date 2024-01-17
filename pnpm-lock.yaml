@@ -10,7 +10,7 @@ importers:
     devDependencies:
       '@antfu/eslint-config':
         specifier: ^2.6.2
-        version: 2.6.2(@vue/compiler-sfc@3.4.13)(eslint@8.55.0)(typescript@5.3.3)(vitest@1.2.0)
+        version: 2.6.2(@unocss/eslint-plugin@0.58.3)(@vue/compiler-sfc@3.4.13)(eslint@8.55.0)(typescript@5.3.3)(vitest@1.2.0)
       '@antfu/ni':
         specifier: ^0.21.12
         version: 0.21.12
@@ -26,6 +26,9 @@ importers:
       '@types/node':
         specifier: ^20.11.0
         version: 20.11.0
+      '@unocss/eslint-plugin':
+        specifier: ^0.58.3
+        version: 0.58.3(eslint@8.55.0)(typescript@5.3.3)
       bumpp:
         specifier: ^9.2.1
         version: 9.2.1
@@ -274,7 +277,7 @@ packages:
       '@jridgewell/trace-mapping': 0.3.21
     dev: true
 
-  /@antfu/eslint-config@2.6.2(@vue/compiler-sfc@3.4.13)(eslint@8.55.0)(typescript@5.3.3)(vitest@1.2.0):
+  /@antfu/eslint-config@2.6.2(@unocss/eslint-plugin@0.58.3)(@vue/compiler-sfc@3.4.13)(eslint@8.55.0)(typescript@5.3.3)(vitest@1.2.0):
     resolution: {integrity: sha512-iHJtFrJLE0gc+oQGxe8I2vpXwhn2wAbz2kqunSPhiOt39yV6yuoE+NJt5nstzy0INKfjSL2teQKlr4g7E2bVhA==}
     hasBin: true
     peerDependencies:
@@ -310,6 +313,7 @@ packages:
       '@stylistic/eslint-plugin': 1.5.3(eslint@8.55.0)(typescript@5.3.3)
       '@typescript-eslint/eslint-plugin': 6.18.1(@typescript-eslint/parser@6.18.1)(eslint@8.55.0)(typescript@5.3.3)
       '@typescript-eslint/parser': 6.18.1(eslint@8.55.0)(typescript@5.3.3)
+      '@unocss/eslint-plugin': 0.58.3(eslint@8.55.0)(typescript@5.3.3)
       eslint: 8.55.0
       eslint-config-flat-gitignore: 0.1.2
       eslint-merge-processors: 0.1.0(eslint@8.55.0)
@@ -1325,6 +1329,11 @@ packages:
     dev: true
     optional: true
 
+  /@pkgr/core@0.1.1:
+    resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
+    engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
+    dev: true
+
   /@polka/url@1.0.0-next.24:
     resolution: {integrity: sha512-2LuNTFBIO0m7kKIQvvPHN6UE63VjpmL9rnEEaOOaiSPbZK+zUOYIzBAWcED+3XYzhYsd/0mD57VdxAEqqV52CQ==}
     dev: true
@@ -1860,6 +1869,21 @@ packages:
 
   /@unocss/core@0.58.3:
     resolution: {integrity: sha512-9hTxzsrSLh+07ql/lGhE+8ZbE9MTTeZeMx131cPf2jDJUxAZooLE5pBCoK0k77ZJGcribRrwPGkUScBNOK0cYQ==}
+    dev: true
+
+  /@unocss/eslint-plugin@0.58.3(eslint@8.55.0)(typescript@5.3.3):
+    resolution: {integrity: sha512-5E55Oz13aPpbKblR/DQfjahl/CNChHI97P19Flv2CslS2rNjPwI2c1nV7He3SJdJtnfd88To78ltlz7UOZzOqA==}
+    engines: {node: '>=14'}
+    dependencies:
+      '@typescript-eslint/utils': 6.18.1(eslint@8.55.0)(typescript@5.3.3)
+      '@unocss/config': 0.58.3
+      '@unocss/core': 0.58.3
+      magic-string: 0.30.5
+      synckit: 0.8.8
+    transitivePeerDependencies:
+      - eslint
+      - supports-color
+      - typescript
     dev: true
 
   /@unocss/extractor-arbitrary-variants@0.58.3:
@@ -5368,6 +5392,14 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
+  /synckit@0.8.8:
+    resolution: {integrity: sha512-HwOKAP7Wc5aRGYdKH+dw0PRRpbO841v2DENBtjnR5HFWoiNByAl7vrx3p0G/rCyYXQsrxqtX48TImFtPcIHSpQ==}
+    engines: {node: ^14.18.0 || >=16.0.0}
+    dependencies:
+      '@pkgr/core': 0.1.1
+      tslib: 2.6.2
+    dev: true
+
   /tabbable@6.2.0:
     resolution: {integrity: sha512-Cat63mxsVJlzYvN51JmVXIgNoUokrIaT2zLclCXjRd8boZ0004U4KCs/sToJ75C6sdlByWxpYnb5Boif1VSFew==}
     dev: true
@@ -5458,6 +5490,10 @@ packages:
       typescript: '>=4.2.0'
     dependencies:
       typescript: 5.3.3
+    dev: true
+
+  /tslib@2.6.2:
+    resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
     dev: true
 
   /tsx@4.7.0:
