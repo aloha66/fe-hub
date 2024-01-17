@@ -96,4 +96,42 @@ describe('draggable', () => {
       `)
     })
   })
+
+  describe('bounds', () => {
+    const bounds = { top: -100, left: -100, right: 100, bottom: 100 }
+    it('should not move beyond bounds with a object without over the bounds', () => {
+      const da = new Draggable({ bounds })
+      da.setElement(div)
+
+      div.dispatchEvent(new MouseEvent('mousedown'))
+      div.ownerDocument.dispatchEvent(new MouseEvent('mousemove', DISTANCE))
+
+      // 检查入参
+      expect(da.state.bounds).toEqual(bounds)
+
+      expect(da.style).toMatchInlineSnapshot(`
+        {
+          "transform": "translate(51px,51px)",
+        }
+      `)
+    })
+
+    it('should not move beyond bounds with a object over right', () => {
+      const da = new Draggable({ bounds })
+      da.setElement(div)
+
+      div.dispatchEvent(new MouseEvent('mousedown'))
+      div.ownerDocument.dispatchEvent(new MouseEvent('mousemove', { clientX: 151, clientY: DISTANCE.clientY }))
+
+      // 检查入参
+      expect(da.state.bounds).toEqual(bounds)
+
+      // TODO
+      expect(da.style).toMatchInlineSnapshot(`
+        {
+          "transform": "translate(51px,51px)",
+        }
+      `)
+    })
+  })
 })
