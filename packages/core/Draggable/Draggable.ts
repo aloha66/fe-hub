@@ -85,6 +85,7 @@ export class Draggable {
     this.#options.defaultClassName = defaultClassName
     this.#options.defaultClassNameDragging = defaultClassNameDragging
     this.#options.defaultClassNameDragged = defaultClassNameDragged
+    // 记录原始位置
     this.#options.defaultPosition = defaultPosition
 
     if (position && !(onDrag || onStop)) {
@@ -229,7 +230,8 @@ export class Draggable {
   }
 
   #getTransformOpts() {
-    const validPosition = this.#state.position || this.#state.defaultPosition
+    const validPosition = this.#state.position || this.#options.defaultPosition
+
     return {
       // Set left if horizontal drag is enabled
       x: canDragX(this.#state) && this.draggable
