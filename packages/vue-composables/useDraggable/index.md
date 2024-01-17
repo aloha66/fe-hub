@@ -5,5 +5,7 @@ import AllowAnyClick from "./demo/AllowAnyClick.vue"
 
 ## useDraggable
 
-<OffestParent/>
+## AllowAnyClick
 <AllowAnyClick/>
+## OffestParent
+<OffestParent/>

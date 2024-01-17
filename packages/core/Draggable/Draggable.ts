@@ -115,6 +115,10 @@ export class Draggable {
     return !this.controlled || this.#state.dragging
   }
 
+  get state() {
+    return this.#state
+  }
+
   get style() {
     return createCSSTransform(this.#getTransformOpts(), this.#state.positionOffset)
   }

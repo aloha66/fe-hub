@@ -1,37 +1,30 @@
-
 <script setup lang="ts">
-import {  ref, watchEffect } from 'vue'
-import Wrapper from './Wrapper.vue'
+import { ref } from 'vue'
 import { useDraggable } from '..'
+import Wrapper from './Wrapper.vue'
 
 const el = ref<HTMLElement | null>(null)
 
 const allowAnyClick = ref(false)
 
+const { style, setState } = useDraggable(el, { allowAnyClick: allowAnyClick.value })
 
-const { style,setState } = useDraggable(el,{allowAnyClick:allowAnyClick.value})
-
-
-const toggle = () => {
+function toggle() {
   allowAnyClick.value = !allowAnyClick.value
   setState({
-    allowAnyClick: allowAnyClick.value
+    allowAnyClick: allowAnyClick.value,
   })
 }
-
-
-
 </script>
 
 <template>
-<div ref="el" :style="style">
-  <Wrapper>
-    AllowAnyClick
-</Wrapper>
-</div >
+  <div ref="el" :style="style">
+    <Wrapper>
+      AllowAnyClick
+    </Wrapper>
+  </div>
 
-<button @click="toggle">{{ allowAnyClick ? '右键可拖动': '只能左键拖动' }}</button>
+  <button @click="toggle">
+    {{ allowAnyClick ? '只能左键拖动' : '右键可拖动' }}
+  </button>
 </template>
-
-
-
