@@ -1,13 +1,14 @@
-import { getTouch, offsetXYFromParent } from '@fe-hub/shared'
+import { getTouch, isNumber, offsetXYFromParent } from '@fe-hub/shared'
 import type { FinalState } from '../Draggable/Draggable'
+import type { Bounds } from '..'
 import type { DraggableData } from './type'
-import type {  DraggableCoreState } from '.'
+import type { DraggableCoreState } from '.'
 
-export function getControlPosition(e: TouchEvent, options: DraggableCoreState,node:HTMLElement, touchIdentifier?: number) {
+export function getControlPosition(e: TouchEvent, options: DraggableCoreState, node: HTMLElement, touchIdentifier?: number) {
   const touchObj = typeof touchIdentifier === 'number' ? getTouch(e, touchIdentifier) : null
   if (typeof touchIdentifier === 'number' && !touchObj)
     return null // 不是正确的点
-  
+
   const offsetParent = options.offsetParent || node?.offsetParent as HTMLElement || node.ownerDocument.body
   return offsetXYFromParent(touchObj || e as unknown as MouseEvent, offsetParent, options.scale!)
 }
@@ -68,10 +69,47 @@ export function createDraggableData(draggable: FinalState, coreData: DraggableDa
   }
 }
 
-export function getBoundPosition(draggable: FinalState, x: number, y: number): [number, number] {
+function getBoundPositionByObject() {}
+
+/**
+ * 计算元素在边界内的位置
+ * @param draggable
+ * @param x
+ * @param y
+ * @returns
+ */
+export function getBoundPosition(draggable: FinalState, x: number, y: number, node: HTMLElement): [number, number] {
   const { bounds } = draggable
   if (!bounds)
     return [x, y]
-  // TODO
-  return [x, y]
+  const isString = typeof bounds === 'string'
+  const _bounds = cloneBounds(bounds as Bounds)
+
+  let _x = x
+  let _y = y
+  if (isString) {
+
+  }
+
+  // Keep x and y below right and bottom limits...
+  if (isNumber(_bounds.right))
+    _x = Math.min(_x, _bounds.right)
+  if (isNumber(_bounds.bottom))
+    _y = Math.min(_y, _bounds.bottom)
+
+  if (isNumber(_bounds.left))
+    _x = Math.max(_x, _bounds.left)
+  if (isNumber(_bounds.top))
+    _y = Math.max(_y, _bounds.top)
+  return [_x, _y]
+}
+
+// A lot faster than stringify/parse
+function cloneBounds(bounds: Bounds): Bounds {
+  return {
+    left: bounds.left,
+    top: bounds.top,
+    right: bounds.right,
+    bottom: bounds.bottom,
+  }
 }

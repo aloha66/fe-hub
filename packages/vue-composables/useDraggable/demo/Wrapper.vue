@@ -14,7 +14,7 @@ const float = computed(() => {
   </div>
 </template>
 
-<style>
+<style scoped>
    .box {
     position: relative;
       background: #fff;
@@ -26,6 +26,6 @@ const float = computed(() => {
       float: left;
       float: v-bind(float);
       overflow: auto;
-       padding: 0
+       padding: 10px
     }
 </style>

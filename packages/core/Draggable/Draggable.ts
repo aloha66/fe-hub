@@ -164,6 +164,7 @@ export class Draggable {
       slackY: 0,
     }
 
+    // Keep within bounds.
     if (this.#state.bounds) {
       // Save original x and y.
       const { x, y } = newState
@@ -171,15 +172,20 @@ export class Draggable {
       // Add slack to the values used to calculate bound position. This will ensure that if
       // we start removing slack, the element won't react to it right away until it's been
       // completely removed.
+      // 元素超出边界的部分加到xy上
+      // 计算边界的时候，元素不会对slack的移除立即做出反应
       newState.x += this.#state.slackX
       newState.y += this.#state.slackY
 
       // Get bound position. This will ceil/floor the x and y within the boundaries.
-      const [newStateX, newStateY] = getBoundPosition(this.#state, newState.x, newState.y)
+      const [newStateX, newStateY] = getBoundPosition(this.#state, newState.x, newState.y, this.#core.el!)
       newState.x = newStateX
       newState.y = newStateY
 
       // Recalculate slack by noting how much was shaved by the boundPosition handler.
+      // 重新计算 slack，
+      // 将原始的 x 和 y 与新的 x 和 y 的差值加到原始的 slackX 和 slackY 上。
+      // 这样做的目的是记录由于边界处理而减少的部分
       newState.slackX = this.#state.slackX + (x - newState.x)
       newState.slackY = this.#state.slackY + (y - newState.y)
 
