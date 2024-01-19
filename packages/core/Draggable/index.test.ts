@@ -98,77 +98,67 @@ describe('draggable', () => {
   })
 
   describe('bounds', () => {
-    const bounds = { top: -100, left: -100, right: 100, bottom: 100 }
-    let da: Draggable
-    beforeEach(() => {
-      da = new Draggable({ bounds })
-      da.setElement(div)
+    describe('object', () => {
+      const bounds = { top: -100, left: -100, right: 100, bottom: 100 }
+      let da: Draggable
+      beforeEach(() => {
+        da = new Draggable({ bounds })
+        da.setElement(div)
 
-      div.dispatchEvent(new MouseEvent('mousedown'))
-    })
-    it('should keep within bounds with a object', () => {
-      div.ownerDocument.dispatchEvent(new MouseEvent('mousemove', DISTANCE))
+        div.dispatchEvent(new MouseEvent('mousedown'))
+      })
+      it('should keep within bounds with a object', () => {
+        div.ownerDocument.dispatchEvent(new MouseEvent('mousemove', DISTANCE))
 
-      // 检查入参
-      expect(da.state.bounds).toEqual(bounds)
+        // 检查入参
+        expect(da.state.bounds).toEqual(bounds)
 
-      expect(da.style).toMatchInlineSnapshot(`
-        {
-          "transform": "translate(51px,51px)",
-        }
-      `)
-    })
+        expect(da.style).toMatchInlineSnapshot(`
+          {
+            "transform": "translate(51px,51px)",
+          }
+        `)
+      })
 
-    it('should keep within bounds with a object when right is over', () => {
-      div.ownerDocument.dispatchEvent(new MouseEvent('mousemove', { clientX: 151, clientY: DISTANCE.clientY }))
+      it('should keep within bounds with a object when right is over', () => {
+        div.ownerDocument.dispatchEvent(new MouseEvent('mousemove', { clientX: 151, clientY: DISTANCE.clientY }))
 
-      // 检查入参
-      expect(da.state.bounds).toEqual(bounds)
+        expect(da.style).toMatchInlineSnapshot(`
+          {
+            "transform": "translate(100px,51px)",
+          }
+        `)
+      })
 
-      expect(da.style).toMatchInlineSnapshot(`
-        {
-          "transform": "translate(100px,51px)",
-        }
-      `)
-    })
+      it('should keep within bounds with a object when bottom is over', () => {
+        div.ownerDocument.dispatchEvent(new MouseEvent('mousemove', { clientX: DISTANCE.clientX, clientY: 101 }))
 
-    it('should keep within bounds with a object when bottom is over', () => {
-      div.ownerDocument.dispatchEvent(new MouseEvent('mousemove', { clientX: DISTANCE.clientX, clientY: 101 }))
+        expect(da.style).toMatchInlineSnapshot(`
+          {
+            "transform": "translate(51px,100px)",
+          }
+        `)
+      })
 
-      // 检查入参
-      expect(da.state.bounds).toEqual(bounds)
+      it('should keep within bounds with a object when left is over', () => {
+        div.ownerDocument.dispatchEvent(new MouseEvent('mousemove', { clientX: -101, clientY: DISTANCE.clientY }))
 
-      expect(da.style).toMatchInlineSnapshot(`
-        {
-          "transform": "translate(51px,100px)",
-        }
-      `)
-    })
+        expect(da.style).toMatchInlineSnapshot(`
+          {
+            "transform": "translate(-100px,51px)",
+          }
+        `)
+      })
 
-    it('should keep within bounds with a object when left is over', () => {
-      div.ownerDocument.dispatchEvent(new MouseEvent('mousemove', { clientX: -101, clientY: DISTANCE.clientY }))
+      it('should keep within bounds with a object when top is over', () => {
+        div.ownerDocument.dispatchEvent(new MouseEvent('mousemove', { clientX: DISTANCE.clientX, clientY: -101 }))
 
-      // 检查入参
-      expect(da.state.bounds).toEqual(bounds)
-
-      expect(da.style).toMatchInlineSnapshot(`
-        {
-          "transform": "translate(-100px,51px)",
-        }
-      `)
-    })
-
-    it('should keep within bounds with a object when top is over', () => {
-      div.ownerDocument.dispatchEvent(new MouseEvent('mousemove', { clientX: DISTANCE.clientX, clientY: -101 }))
-
-      // 检查入参
-      expect(da.state.bounds).toEqual(bounds)
-
-      expect(da.style).toMatchInlineSnapshot(`
-        {
-          "transform": "translate(51px,-100px)",
-        }
-      `)
+        expect(da.style).toMatchInlineSnapshot(`
+          {
+            "transform": "translate(51px,-100px)",
+          }
+        `)
+      })
     })
   })
 })

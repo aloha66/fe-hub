@@ -48,9 +48,15 @@ export function offsetXYFromParent(evt: Touch | MouseEvent, offsetParent: HTMLEl
   return { x, y }
 }
 
-export interface Position { x: number, y: number }
+export interface Position {
+  x: number
+  y: number
+}
 
-export interface PositionOffsetControlPosition { x: number | string, y: number | string }
+export interface PositionOffsetControlPosition {
+  x: number | string
+  y: number | string
+}
 
 export function getTranslation({ x, y }: Position, unitSuffix: string, positionOffset?: PositionOffsetControlPosition) {
   let translation = `translate(${x}${unitSuffix},${y}${unitSuffix})`
