@@ -8,7 +8,7 @@ import Cancel from "./demo/Cancel.vue"
 </script>
 
 ## useDraggable
-## Cancel
+## Cancel&Disable
 <Cancel/>
 ## Bound
 <Bound/>
