@@ -6,10 +6,13 @@ import Bound from "./demo/Bound.vue"
 import Cancel from "./demo/Cancel.vue"
 import DefaultPosition from "./demo/DefaultPosition.vue"
 import Grid from "./demo/Grid.vue"
+import Event from "./demo/Event.vue"
 
 </script>
 
 ## useDraggable
+## Event
+<Event/>
 ## Grid
 <Grid/>
 ## DefaultPosition

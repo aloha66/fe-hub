@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { MouseEventButtonEnum } from '@fe-hub/shared'
 import { Draggable } from '.'
 
@@ -238,6 +238,26 @@ describe('draggable', () => {
           "transform": "translate(50px,50px)",
         }
       `)
+    })
+  })
+
+  describe('event', () => {
+    it('should emit drag event', () => {
+      const onStart = vi.fn()
+      const onDrag = vi.fn()
+      const onStop = vi.fn()
+      const onMouseDown = vi.fn()
+      const da = new Draggable({ onStart, onDrag, onStop, onMouseDown })
+      da.setElement(div)
+
+      div.dispatchEvent(new MouseEvent('mousedown'))
+      div.ownerDocument.dispatchEvent(new MouseEvent('mousemove', DISTANCE))
+      div.ownerDocument.dispatchEvent(new MouseEvent('mouseup'))
+
+      expect(onStart).toHaveBeenCalledOnce()
+      expect(onDrag).toHaveBeenCalledOnce()
+      expect(onStop).toHaveBeenCalledOnce()
+      expect(onMouseDown).toHaveBeenCalledOnce()
     })
   })
 })
