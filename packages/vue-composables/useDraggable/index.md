@@ -14,7 +14,7 @@ import Grid from "./demo/Grid.vue"
 <Grid/>
 ## DefaultPosition
 <DefaultPosition/>
-## Cancel&Disable
+## Cancel&Disabled&Handle
 <Cancel/>
 ## Bound
 <Bound/>

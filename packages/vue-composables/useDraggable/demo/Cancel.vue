@@ -17,23 +17,37 @@ function toggleDisabled() {
   disabled = !disabled
   setState({ disabled })
 }
+
+const el3 = ref<HTMLElement | null>(null)
+
+const { style: style3 } = useDraggable(el3, { handle: 'strong' })
 </script>
 
 <template>
-  <div ref="el" :style="style">
-    <Wrapper>
-      cancel
-      <div class="not_move">
-        can't move here
-      </div>
-    </Wrapper>
+  <div flex>
+    <div ref="el" :style="style">
+      <Wrapper>
+        cancel
+        <div class="not_move">
+          can't move here
+        </div>
+      </Wrapper>
+    </div>
+
+    <div ref="el2" :style="style2">
+      <Wrapper>
+        disabled
+      </Wrapper>
+    </div>
+
+    <div ref="el3" :style="style3">
+      <Wrapper>
+        <strong><div>Drag here</div></strong>
+        <div>You must click my handle to drag me</div>
+      </Wrapper>
+    </div>
   </div>
 
-  <div ref="el2" :style="style2">
-    <Wrapper>
-      disabled
-    </Wrapper>
-  </div>
   <button @click="toggleDisabled">
     toggleDisabled : {{ disabled }}
   </button>
