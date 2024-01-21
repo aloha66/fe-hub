@@ -13,15 +13,17 @@ const { style: styleY } = useDraggable(elY, { axis: 'y' })
 </script>
 
 <template>
-  <div ref="el" :style="styleX">
-    <Wrapper>
-      axisX
-    </Wrapper>
-  </div>
+  <div flex>
+    <div ref="el" :style="styleX">
+      <Wrapper>
+        axisX
+      </Wrapper>
+    </div>
 
-  <div ref="elY" :style="styleY">
-    <Wrapper>
-      axisY
-    </Wrapper>
+    <div ref="elY" :style="styleY">
+      <Wrapper>
+        axisY
+      </Wrapper>
+    </div>
   </div>
 </template>

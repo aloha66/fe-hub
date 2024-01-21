@@ -18,13 +18,15 @@ function toggle() {
 </script>
 
 <template>
-  <div ref="el" :style="style">
-    <Wrapper>
-      AllowAnyClick
-    </Wrapper>
-  </div>
+  <div flex>
+    <div ref="el" :style="style">
+      <Wrapper>
+        AllowAnyClick
+      </Wrapper>
+    </div>
 
-  <button @click="toggle">
-    {{ allowAnyClick ? '只能左键拖动' : '右键可拖动' }}
-  </button>
+    <button @click="toggle">
+      {{ allowAnyClick ? '只能左键拖动' : '右键可拖动' }}
+    </button>
+  </div>
 </template>
