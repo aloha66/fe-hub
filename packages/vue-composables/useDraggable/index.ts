@@ -10,6 +10,7 @@ export function useDraggable(el: Ref<HTMLElement | null>, options: DraggableOpti
 
   onMounted(() => {
     da.setElement(el.value)
+    style.value = da.style
 
     da.onStateChange(({ newStyle }: StateChangeOptions) => {
       style.value = newStyle

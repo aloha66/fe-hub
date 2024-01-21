@@ -161,4 +161,39 @@ describe('draggable', () => {
       })
     })
   })
+
+  describe('defaultPosition', () => {
+    it(`should init position x:${DISTANCE.clientX}px y:${DISTANCE.clientY}px`, () => {
+      const da = new Draggable({ defaultPosition: { x: DISTANCE.clientX, y: DISTANCE.clientY } })
+      da.setElement(div)
+
+      // 检查入参
+      expect(da.state.x).toBe(DISTANCE.clientX)
+      expect(da.state.y).toBe(DISTANCE.clientY)
+
+      expect(da.style).toMatchInlineSnapshot(`
+        {
+          "transform": "translate(51px,51px)",
+        }
+      `)
+    })
+
+    it('should move deouble when set the defaultPosition', () => {
+      const da = new Draggable({ defaultPosition: { x: DISTANCE.clientX, y: DISTANCE.clientY } })
+      da.setElement(div)
+
+      div.dispatchEvent(new MouseEvent('mousedown'))
+      div.ownerDocument.dispatchEvent(new MouseEvent('mousemove', DISTANCE))
+
+      // 检查入参
+      expect(da.state.x).toBe(DISTANCE.clientX * 2)
+      expect(da.state.y).toBe(DISTANCE.clientY * 2)
+
+      expect(da.style).toMatchInlineSnapshot(`
+        {
+          "transform": "translate(102px,102px)",
+        }
+      `)
+    })
+  })
 })
