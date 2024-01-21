@@ -196,4 +196,48 @@ describe('draggable', () => {
       `)
     })
   })
+
+  describe('grid', () => {
+    it('should remaining x = 0  and y = 0 when Dragging distance less than 50px', () => {
+      const da = new Draggable({ grid: [50, 50] })
+      da.setElement(div)
+
+      div.dispatchEvent(new MouseEvent('mousedown'))
+      div.ownerDocument.dispatchEvent(new MouseEvent('mousemove', { clientX: 10, clientY: 10 }))
+
+      expect(da.style).toMatchInlineSnapshot(`
+        {
+          "transform": "translate(0px,0px)",
+        }
+      `)
+    })
+
+    it('should change x = 50  and y = 50 when Dragging distance more than 50px', () => {
+      const da = new Draggable({ grid: [50, 50] })
+      da.setElement(div)
+
+      div.dispatchEvent(new MouseEvent('mousedown'))
+      div.ownerDocument.dispatchEvent(new MouseEvent('mousemove', DISTANCE))
+
+      expect(da.style).toMatchInlineSnapshot(`
+        {
+          "transform": "translate(50px,50px)",
+        }
+      `)
+    })
+
+    it('should change x = 50  and y = 50 when Dragging distance equal 50px', () => {
+      const da = new Draggable({ grid: [50, 50] })
+      da.setElement(div)
+
+      div.dispatchEvent(new MouseEvent('mousedown'))
+      div.ownerDocument.dispatchEvent(new MouseEvent('mousemove', { clientX: 50, clientY: 50 }))
+
+      expect(da.style).toMatchInlineSnapshot(`
+        {
+          "transform": "translate(50px,50px)",
+        }
+      `)
+    })
+  })
 })

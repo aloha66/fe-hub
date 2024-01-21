@@ -5,10 +5,13 @@ import Axis from "./demo/Axis.vue"
 import Bound from "./demo/Bound.vue"
 import Cancel from "./demo/Cancel.vue"
 import DefaultPosition from "./demo/DefaultPosition.vue"
+import Grid from "./demo/Grid.vue"
 
 </script>
 
 ## useDraggable
+## Grid
+<Grid/>
 ## DefaultPosition
 <DefaultPosition/>
 ## Cancel&Disable
