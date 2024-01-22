@@ -105,6 +105,7 @@ export class Draggable {
       bounds,
       axis,
       scale,
+      position,
     })
   }
 
@@ -203,11 +204,11 @@ export class Draggable {
     this.setState(newState)
   }
 
-  onDragStop: DraggableEventHandler = (e, coreData) => {
+  onDragStop: DraggableEventHandler = (coreData, e) => {
     if (!this.#state.dragging)
       return false
 
-    const shouldUpdate = this.#options.onStop?.(e, coreData)
+    const shouldUpdate = this.#options.onStop?.(createDraggableData(this.#state, coreData), e)
     if (shouldUpdate === false)
       return false
 
@@ -235,6 +236,13 @@ export class Draggable {
     this.setState({ dragging: false }) // prevents invariant if unmounted while dragging
   }
 
+  /**
+   * 控制实际的style输出
+   * 影响范围包括
+   * 1. axix
+   * 2. position(利用是否有初值来判断是否是受控组件)
+   * @returns
+   */
   #getTransformOpts() {
     const validPosition = this.#state.position || this.#options.defaultPosition
 
