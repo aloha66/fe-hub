@@ -376,4 +376,17 @@ describe('draggable', () => {
       `)
     })
   })
+
+  describe('positionOffset', () => {
+    it('should return the correct positionOffset', () => {
+      const da = new Draggable({ positionOffset: { x: '-10%', y: '-10%' } })
+      da.setElement(div)
+
+      expect(da.style).toMatchInlineSnapshot(`
+        {
+          "transform": "translate(-10%, -10%)translate(0px,0px)",
+        }
+      `)
+    })
+  })
 })

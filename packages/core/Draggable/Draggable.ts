@@ -76,6 +76,7 @@ export class Draggable {
       defaultClassNameDragging = 'react-draggable-dragging',
       defaultClassNameDragged = 'react-draggable-dragged',
       defaultPosition = { x: 0, y: 0 },
+      positionOffset,
     } = options
 
     const { position, onDrag, onStop, scale = 1 } = options
@@ -106,6 +107,7 @@ export class Draggable {
       axis,
       scale,
       position,
+      positionOffset,
     })
   }
 
