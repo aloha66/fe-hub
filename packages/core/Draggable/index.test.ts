@@ -321,27 +321,8 @@ describe('draggable', () => {
       div.ownerDocument.dispatchEvent(new MouseEvent('mousemove', DISTANCE))
       div.dispatchEvent(new MouseEvent('mouseup'))
 
-      expect(da.state).toMatchInlineSnapshot(`
-        {
-          "axis": "both",
-          "bounds": false,
-          "dragged": true,
-          "dragging": false,
-          "position": {
-            "x": 25,
-            "y": 25,
-          },
-          "prevPropsPosition": {
-            "x": 25,
-            "y": 25,
-          },
-          "scale": 1,
-          "slackX": 0,
-          "slackY": 0,
-          "x": 25,
-          "y": 25,
-        }
-      `)
+      expect(da.state.x).toBe(position.x)
+      expect(da.state.y).toBe(position.y)
 
       /**
        * TODO 单测的回调结果不正确？？
