@@ -2,6 +2,8 @@ import type { PositionOffsetControlPosition } from '@fe-hub/shared'
 import type { DraggableCoreState } from '../DraggableCore'
 import type { ControlPosition } from '../DraggableCore/type'
 
+export type Axis = 'both' | 'x' | 'y' | 'none'
+
 export interface DraggableState extends DraggableCoreState {
   /**
    * 决定往那个方向移动
@@ -10,7 +12,7 @@ export interface DraggableState extends DraggableCoreState {
    * 'y' 垂直
    * 'none' 不移动
    */
-  axis?: 'both' | 'x' | 'y' | 'none'
+  axis?: Axis
   /**
    * 移动边界，限制移动范围
    * 'parent' 限制在节点的offsetParent内移动

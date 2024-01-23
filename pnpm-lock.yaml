@@ -121,6 +121,9 @@ importers:
       '@fe-hub/core':
         specifier: workspace:^
         version: link:../core
+      '@fe-hub/shared':
+        specifier: workspace:^
+        version: link:../shared
       '@fe-hub/vue-composables':
         specifier: workspace:^
         version: link:../vue-composables

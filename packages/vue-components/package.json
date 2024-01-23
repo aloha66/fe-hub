@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@fe-hub/core": "workspace:^",
+    "@fe-hub/shared": "workspace:^",
     "@fe-hub/vue-composables": "workspace:^"
   }
 }

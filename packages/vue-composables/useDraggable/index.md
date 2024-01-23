@@ -12,21 +12,26 @@ import Position from "./demo/Position.vue"
 </script>
 
 ## useDraggable
-## Position
+### Demo
+#### Position
 <Position/>
-## Event
+#### Event
 <Event/>
-## Grid
+#### Grid
 <Grid/>
-## DefaultPosition
+#### DefaultPosition
 <DefaultPosition/>
-## Cancel&Disabled&Handle
+#### Cancel&Disabled&Handle
 <Cancel/>
-## Bound
+#### Bound
 <Bound/>
-## Axis
+#### Axis
 <Axis/>
-## AllowAnyClick
+#### AllowAnyClick
 <AllowAnyClick/>
-## OffestParent
+#### OffestParent
 <OffestParent/>
+
+## 注意事项
+1. useDraggable的el只能是HTMLElement type，如果是vue component，建议改用UseDraggable的组件形式
+2. 处理多个组件的时候，建议改用UseDraggable的组件形式
