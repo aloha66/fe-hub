@@ -6,7 +6,7 @@ export default defineConfig({
     environment: 'happy-dom',
     coverage: {
       include: ['packages/core/**/*.ts', 'packages/shared/**/*.ts', 'packages/vue-composables/**/*.ts'],
-      exclude: ['packages/**/type.ts'],
+      exclude: ['packages/**/type.ts', 'packages/**/ignore'],
     },
   },
 
