@@ -81,7 +81,7 @@ describe('withRetry', () => {
       .mockRejectedValueOnce(new Error(FAILURE))
       .mockRejectedValueOnce(new Error(FAILURE))
       .mockResolvedValueOnce(SUCCESS)
-    const condition = withRetry(3,200)
+    const condition = withRetry(3, 200)
     const action = condition(mockFn)
     const result = action()
     expect(result).resolves.toBe(SUCCESS)

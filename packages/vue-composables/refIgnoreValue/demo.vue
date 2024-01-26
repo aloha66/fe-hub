@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { refIgnoreValue } from '.';
-
+import { refIgnoreValue } from '.'
 
 class Test {
   // state = createReactiveProperty('initialValue1','state');
@@ -19,17 +18,15 @@ class Test {
 
   @refIgnoreValue
   state1 = {
-      aa: 0
-    };
+    aa: 0,
+  }
 
   @refIgnoreValue
-  state2:number;
+  state2: number
 
   constructor() {
     this.reset()
-    console.log('state',this.state1);
     this.state2 = 666
-
   }
 
   get aa() {
@@ -38,7 +35,7 @@ class Test {
 
   reset() {
     this.state1 = {
-      aa: 1
+      aa: 1,
     }
   }
 
@@ -47,26 +44,28 @@ class Test {
   }
 }
 
-
 const test = new Test()
 
-const handleWe = () => {
-  // @ts-ignore
-  test.state2 = {ss:233}
-
+function handleWe() {
+  // @ts-expect-error let me do it
+  test.state2 = { ss: 233 }
 }
 </script>
+
 <template>
   <div>
-   <p>
-    get 存取器 :{{test?.aa}}
-   </p>
-   <p>
-    state的值 {{ test.state1 }}
-   </p>
-<button @click="test?.changeVal">点击改变aa的值</button>
-</div>
-{{  test.state2  }}
-<div @click="handleWe">点击改变state2的值</div>
-
+    <p>
+      get 存取器 :{{ test?.aa }}
+    </p>
+    <p>
+      state的值 {{ test.state1 }}
+    </p>
+    <button @click="test?.changeVal">
+      点击改变aa的值
+    </button>
+  </div>
+  {{ test.state2 }}
+  <div @click="handleWe">
+    点击改变state2的值
+  </div>
 </template>
