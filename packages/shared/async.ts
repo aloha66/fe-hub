@@ -1,3 +1,5 @@
+import { TIMEOUT } from './constant'
+
 // 导出PromiseFn类型，它是一个函数，接受一个泛型T，返回一个Promise<R>
 export type PromiseFn<T extends any[], R> = (...args: T) => Promise<R>
 
@@ -12,7 +14,7 @@ export function asyncTimeout(ms = 5000) {
     return function (...args: T) {
       // 第三层接收参数
       return Promise.race([fn(...args), new Promise<never>((_, reject) => setTimeout(() => {
-        reject(new Error('Timeout'))
+        reject(new Error(TIMEOUT))
       }, ms))])
     }
   }
@@ -39,7 +41,7 @@ export function withRetry(maxRetries = 3, delay = 0) {
         catch (e) {
           if (retries === maxRetries)
             throw e
-          console.warn(`Retry ${retries} times due to error: `, e)
+          // console.warn(`Retry ${retries} times due to error: `, e)
           retries++
         }
       }

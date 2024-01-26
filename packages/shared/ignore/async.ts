@@ -1,3 +1,4 @@
+/* eslint-disable unused-imports/no-unused-vars */
 /* eslint-disable no-console */
 import { asyncTimeout, sleep, withRetry } from '../async'
 
@@ -42,18 +43,17 @@ async function withRetrySuccess() {
 
 let count = 0
 async function failTwice() {
-  if(count === 2) {
+  if (count === 2) {
     count = 0
     return 'success'
   }
 
   count++
   return Promise.reject(new Error('failure'))
-
 }
 
-async function withRetryFailure(fn:any,times?:number) {
-  const condition = withRetry(2,times)
+async function withRetryFailure(fn: any, times?: number) {
+  const condition = withRetry(2, times)
   const action = condition(fn)
   const result = await action()
   console.log(result)

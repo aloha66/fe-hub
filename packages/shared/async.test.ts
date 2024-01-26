@@ -1,8 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { asyncTimeout, withRetry } from './async'
-
-const SUCCESS = 'success'
-const FAILURE = 'failure'
+import { FAILURE, SUCCESS } from './constant'
 
 describe('asyncTimeout', () => {
   beforeEach(() => {
