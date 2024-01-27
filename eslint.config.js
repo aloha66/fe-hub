@@ -21,6 +21,7 @@ export default antfu(
       'quotes': ['error', 'single'],
       'semi': ['error', 'never'],
       'jsx-quotes': ['error', 'prefer-single'],
+      'no-restricted-syntax': 'off',
     },
   },
   // {

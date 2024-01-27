@@ -26,12 +26,13 @@ export function MarkdownTransform(): Plugin {
       if (functionNames.includes(name) && i === 'index.md') {
         const dirname = join(DIR_SRC, pkg, name)
         const demoPath = ['demo.vue', 'demo.client.vue'].find(i => fs.existsSync(join(dirname, i)))
-        if(!demoPath) return code
+        if (!demoPath)
+          return code
         const frontmatterEnds = code.indexOf('---\n\n')
         const firstHeader = code.search(/\n#{2,6}\s.+/)
         const sliceIndex = firstHeader < 0 ? frontmatterEnds < 0 ? 0 : frontmatterEnds + 4 : firstHeader
 
-        const { header } = await getFunctionMarkdown(pkg, name,demoPath)
+        const { header } = await getFunctionMarkdown(pkg, name, demoPath)
         code = code.slice(0, sliceIndex) + header + code.slice(sliceIndex)
 
         return code
@@ -40,11 +41,7 @@ export function MarkdownTransform(): Plugin {
   }
 }
 
-
-
-export async function getFunctionMarkdown(pkg: string, name: string,demoPath:string) {
-
-
+export async function getFunctionMarkdown(pkg: string, name: string, demoPath: string) {
   const demoSection = `
   <script setup>
   import { defineAsyncComponent } from 'vue'
