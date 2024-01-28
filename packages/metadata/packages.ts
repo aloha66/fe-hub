@@ -29,4 +29,10 @@ export const packages: PackageManifest[] = [
     description: 'vue-components',
 
   },
+  {
+    name: 'react-hooks',
+    display: 'react-hooks',
+    description: 'react-hooks',
+
+  },
 ]

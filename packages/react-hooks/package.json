@@ -1,0 +1,26 @@
+{
+  "name": "@fe-hub/react-hooks",
+  "version": "0.0.0",
+  "private": true,
+  "description": "",
+  "author": "aloha66",
+  "license": "MIT",
+  "keywords": [],
+  "sideEffects": false,
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "peerDependencies": {
+    "react": ">= 17.0.2"
+  },
+  "dependencies": {
+    "@fe-hub/core": "workspace:^",
+    "@fe-hub/shared": "workspace:^"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^14.1.2",
+    "@types/react": "^18.2.48",
+    "react": "^18.2.0"
+  }
+}
