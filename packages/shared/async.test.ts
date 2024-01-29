@@ -38,12 +38,12 @@ describe('asyncTimeout', () => {
 })
 
 describe('withRetry', () => {
-  beforeEach(() => {
-    vi.useFakeTimers()
-  })
-  afterEach(() => {
-    vi.restoreAllMocks()
-  })
+  // beforeEach(() => {
+  //   vi.useFakeTimers()
+  // })
+  // afterEach(() => {
+  //   vi.restoreAllMocks()
+  // })
 
   it('should resolve if the promise success at first try', async () => {
     // create a mock function that returns a resolved promise
@@ -72,7 +72,7 @@ describe('withRetry', () => {
   /**
    * 时间的mock有问题
    */
-  it.todo('should resolve if the promise success after some retries after 200ms', async () => {
+  it('should resolve if the promise success after some retries after 200ms', async () => {
     // create a mock function that returns a rejected promise at first two tries
     // and a resolved promise at the third try
     const mockFn = vi.fn()
@@ -82,9 +82,9 @@ describe('withRetry', () => {
     const condition = withRetry(3, 200)
     const action = condition(mockFn)
     const result = action()
+    // vi.advanceTimersToNextTimer()
+    // vi.runAllTimers()
     expect(result).resolves.toBe(SUCCESS)
-    // check that the mock was called three times
-    // expect(mockFn).toHaveBeenCalledTimes(3)
   })
 
   it('should reject if the promise fails after all retries', async () => {

@@ -96,7 +96,7 @@ describe('compose timeout or retry', () => {
     expect(mockFn).toHaveBeenCalledTimes(4)
   })
 
-  it.todo('错误，全部错误，重试4次', async () => {
+  it('错误，全部错误，重试4次', async () => {
     // create a mock function that returns a rejected promise always
     const mockFn = vi.fn().mockRejectedValue(new Error(FAILURE))
 
@@ -205,7 +205,7 @@ describe('compose timeout or retry', () => {
     expect(mockFn).toHaveBeenCalledTimes(1)
   })
 
-  it.todo('成功，两次错误，最后一次成功，优先级是超时，且每个任务时间远短与超时时长', async () => {
+  it('成功，两次错误，最后一次成功，优先级是超时，且每个任务时间远短与超时时长', async () => {
     // create a mock function that always succeeds
     const mockFn = vi.fn().mockRejectedValueOnce(new Error(FAILURE))
       .mockRejectedValueOnce(new Error(FAILURE))
