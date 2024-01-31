@@ -1,10 +1,11 @@
 import type { DraggableOptions } from '@fe-hub/core'
-import { removeUndefind } from '@fe-hub/shared'
+import { removeUndefined } from '@fe-hub/shared'
 import type { RenderableComponent } from '@fe-hub/vue-components/type'
 import { useDraggable } from '@fe-hub/vue-composables'
-import { cloneVNode, defineComponent, h, mergeProps, ref, toValue, watch } from 'vue'
+import { cloneVNode, defineComponent, h, mergeProps, ref, watch } from 'vue'
 
-export interface UseDraggableProps extends DraggableOptions, RenderableComponent {}
+export interface UseDraggableProps extends DraggableOptions, RenderableComponent {
+}
 
 export const UseDraggable = /* #__PURE__ */ defineComponent<UseDraggableProps>({
   name: 'UseDraggable',
@@ -48,7 +49,7 @@ export const UseDraggable = /* #__PURE__ */ defineComponent<UseDraggableProps>({
      * 所以暂时只能统一处理，并过滤掉undefined的内容
      */
     watch(props, (newProps) => {
-      setState({ ...removeUndefind(newProps) })
+      setState({ ...removeUndefined(newProps) })
     })
 
     return () => {
