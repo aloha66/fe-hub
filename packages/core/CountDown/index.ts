@@ -120,15 +120,20 @@ export class CountDown {
 
   run = () => {
     this.#dateNow = Date.now()
+    const { isIncrement } = this.#state
+    if (isIncrement && !this.#pauseTime)
+      this.#count = 0
     this.#IntervalRun()
   }
 
   pause = () => {
+    this.#pauseTime = this.#count
     this.#IntervalPause()
   }
 
   stop = () => {
-    // this.#isPause = false
+    this.#pauseTime = 0
+    this.#count = 0
     this.#IntervalStop()
   }
 
@@ -176,8 +181,11 @@ export class CountDown {
     if (!this.target)
       return 0
 
-    const left = this.target - Date.now()
-    this.#count = left < 0 ? 0 : left
+    const remainingTime = this.#pauseTime ? this.#pauseTime : this.target - Date.now()
+    if (this.#pauseTime > 0)
+      this.#pauseTime -= this.offset
+
+    this.#count = Math.max(remainingTime, 0)
     if (this.#count === 0) {
       this.#IntervalStop()
       this.#option.onEnd?.()
@@ -197,14 +205,11 @@ export class CountDown {
     this.#timer = setInterval(() => {
       const { isIncrement } = this.#state
       isIncrement ? this.#increment() : this.#decrement()
-      console.log(111)
-
       this.#option.onCountChange?.(this.#count)
     }, this.offset)
   }
 
   #IntervalPause() {
-    this.#pauseTime = this.#count
     clearInterval(this.#timer)
   }
 
