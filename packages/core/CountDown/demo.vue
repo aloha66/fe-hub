@@ -2,11 +2,11 @@
 import { onMounted } from 'vue'
 import { CountDown } from './index'
 
-const cd = new CountDown({ leftTime: 5000, onCountChange(e) {
+// const cd = new CountDown({ leftTime: 10 * 1000, onCountChange(e) {
+//   console.log('ee', e)
+// } })
+
+const cd = new CountDown({ isIncrement: true, leftTime: 10 * 1000, onCountChange(e) {
   console.log('ee', e)
 } })
-
-onMounted(() => {
-  cd.run()
-})
 </script>

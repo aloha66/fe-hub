@@ -69,20 +69,27 @@ export class CountDown {
   #state: CountDownState
   #option: CountDownOptions
 
+  // @ts-expect-error let me do it
   #timer: ReturnType<typeof setInterval>
 
-  #timeLeft = 0
+  #count = 0
 
   #dateNow = Date.now()
 
+  #pauseTime = 0
+
   constructor(options: CountDownOptions = {}) {
     this.#option = options
-    const { onEnd: _onEnd, leftTime, targetDate, aliasTime, ...rest } = options
+    const { onEnd: _onEnd, leftTime, targetDate, aliasTime, manual = false, ...rest } = options
     if (!isNumber(leftTime) && !targetDate && !aliasTime)
       throw new Error('time is undefined')
-    this.#state = { leftTime, targetDate: this.#fixDateByString(targetDate), aliasTime, ...rest }
+    this.#state = { leftTime, targetDate: this.#fixDateByString(targetDate), aliasTime, manual, ...rest }
 
-    this.#dateNow = Date.now()
+    !manual && this.run()
+  }
+
+  setState(payload: CountDownState) {
+    this.#state = { ...this.#state, ...payload }
   }
 
   /**
@@ -107,19 +114,21 @@ export class CountDown {
     return this.#calcAliasTime(offset)
   }
 
-  get timeLeft() {
-    return this.#timeLeft
+  get count() {
+    return this.#count
   }
 
-  run() {
+  run = () => {
+    this.#dateNow = Date.now()
     this.#IntervalRun()
   }
 
-  pause() {
+  pause = () => {
     this.#IntervalPause()
   }
 
-  stop() {
+  stop = () => {
+    // this.#isPause = false
     this.#IntervalStop()
   }
 
@@ -163,24 +172,39 @@ export class CountDown {
     return Reflect.get(calcMap, unit)()
   }
 
-  #calcLeft() {
+  #decrement() {
     if (!this.target)
       return 0
 
-    console.log('this.target - Date.now()', this.target, Date.now())
     const left = this.target - Date.now()
-    return left < 0 ? 0 : left
+    this.#count = left < 0 ? 0 : left
+    if (this.#count === 0) {
+      this.#IntervalStop()
+      this.#option.onEnd?.()
+    }
+  }
+
+  #increment() {
+    this.#count += this.offset
+    if (this.#count >= this.target - this.#dateNow) {
+      this.#IntervalStop()
+      this.#option.onEnd?.()
+    }
   }
 
   #IntervalRun() {
     clearInterval(this.#timer)
     this.#timer = setInterval(() => {
-      this.#timeLeft = this.#calcLeft()
-      this.#option.onCountChange?.(this.#timeLeft)
+      const { isIncrement } = this.#state
+      isIncrement ? this.#increment() : this.#decrement()
+      console.log(111)
+
+      this.#option.onCountChange?.(this.#count)
     }, this.offset)
   }
 
   #IntervalPause() {
+    this.#pauseTime = this.#count
     clearInterval(this.#timer)
   }
 
