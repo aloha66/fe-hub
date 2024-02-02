@@ -1,4 +1,5 @@
 import { TIMEOUT } from './constant'
+import { inBrowser } from '.'
 
 // 导出PromiseFn类型，它是一个函数，接受一个泛型T，返回一个Promise<R>
 export type PromiseFn<T extends any[], R> = (...args: T) => Promise<R>
@@ -51,4 +52,13 @@ export function withRetry(maxRetries = 3, delay = 0) {
 
 export function sleep(ms = 200) {
   return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+export function raf(fn: FrameRequestCallback): number {
+  return inBrowser ? requestAnimationFrame(fn) : -1
+}
+
+export function cancelRaf(id: number) {
+  if (inBrowser)
+    cancelAnimationFrame(id)
 }
