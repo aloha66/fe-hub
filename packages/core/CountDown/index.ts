@@ -1,4 +1,5 @@
 import { fixDateFormatForSafari, isNumber, isString } from '@fe-hub/shared'
+import { cancelRaf, raf } from '@fe-hub/shared/async'
 import { DAY, HOUR, MINUTE, SECOND } from '@fe-hub/shared/constant'
 
 type TDate = Date | number | string | undefined
@@ -9,9 +10,9 @@ function getNumAndUnit(time: string) {
   return [+num, unit] as const
 }
 
-function transformTargetDate(date: TDate, dateNow: number) {
+function transformTargetDate(date: TDate) {
   if (!date)
-    return dateNow
+    return Date.now()
   if (isNumber(date))
     return date
   if (isString(date))
@@ -54,6 +55,10 @@ export interface CountDownState {
    * @default false
    */
   manual?: boolean
+  /**
+   * 毫秒级
+   */
+  millisecond?: boolean
 
 }
 
@@ -62,30 +67,31 @@ export interface CountDownOptions extends CountDownState {
    * 倒计时结束触发
    */
   onEnd?: () => void
-  onCountChange?: (time: number) => void
+  onChange?: (time: number) => void
 }
 
 export class CountDown {
   #state: CountDownState
   #option: CountDownOptions
 
-  // @ts-expect-error let me do it
-  #timer: ReturnType<typeof setInterval>
-
   #count = 0
 
-  #dateNow = Date.now()
+  #counting = false
+  #endTime = 0
+  #startTime = 0
 
-  #pauseTime = 0
+  #rafId = 0
 
   constructor(options: CountDownOptions = {}) {
     this.#option = options
-    const { onEnd: _onEnd, leftTime, targetDate, aliasTime, manual = false, ...rest } = options
+    const { onEnd: _onEnd, leftTime, targetDate, aliasTime, manual = false, isIncrement, ...rest } = options
     if (!isNumber(leftTime) && !targetDate && !aliasTime)
       throw new Error('time is undefined')
-    this.#state = { leftTime, targetDate: this.#fixDateByString(targetDate), aliasTime, manual, ...rest }
+    this.#state = { leftTime, targetDate: this.#fixDateByString(targetDate), aliasTime, manual, isIncrement, ...rest }
 
-    !manual && this.run()
+    this.#count = isIncrement ? 0 : this.targetTime
+
+    !manual && this.start()
   }
 
   setState(payload: CountDownState) {
@@ -95,14 +101,14 @@ export class CountDown {
   /**
    * 目标时间
    */
-  get target() {
+  get targetTime() {
     const { leftTime, aliasTime, targetDate } = this.#state
     if (isNumber(leftTime) && leftTime > 0)
-      return this.#dateNow + leftTime
+      return leftTime
     else if (aliasTime)
-      return this.#dateNow + this.#calcAliasTime(aliasTime)
+      return this.#calcAliasTime(aliasTime)
 
-    return transformTargetDate(targetDate, this.#dateNow)
+    return transformTargetDate(targetDate)
   }
 
   get offset() {
@@ -118,23 +124,29 @@ export class CountDown {
     return this.#count
   }
 
-  run = () => {
-    this.#dateNow = Date.now()
-    const { isIncrement } = this.#state
-    if (isIncrement && !this.#pauseTime)
-      this.#count = 0
-    this.#IntervalRun()
+  #run() {
+    const { millisecond } = this.#state
+    millisecond ? this.#onTime() : this.#unOnTime()
+  }
+
+  start = () => {
+    if (this.#counting)
+      return
+    this.#counting = true
+    this.#endTime = Date.now() + this.#count
+    this.#startTime = this.#count ? Date.now() - this.#count : Date.now()
+    this.#run()
   }
 
   pause = () => {
-    this.#pauseTime = this.#count
-    this.#IntervalPause()
+    this.#counting = false
+    cancelRaf(this.#rafId)
   }
 
-  stop = () => {
-    this.#pauseTime = 0
-    this.#count = 0
-    this.#IntervalStop()
+  stop = (targetTime = this.targetTime) => {
+    this.pause()
+    const { isIncrement } = this.#state
+    this.#setCount(isIncrement ? 0 : targetTime)
   }
 
   #fixDateByString(date: TDate) {
@@ -177,43 +189,37 @@ export class CountDown {
     return Reflect.get(calcMap, unit)()
   }
 
-  #decrement() {
-    if (!this.target)
-      return 0
-
-    const remainingTime = this.#pauseTime ? this.#pauseTime : this.target - Date.now()
-    if (this.#pauseTime > 0)
-      this.#pauseTime -= this.offset
-
-    this.#count = Math.max(remainingTime, 0)
-    if (this.#count === 0) {
-      this.#IntervalStop()
+  #setCount(value: number) {
+    this.#count = value
+    this.#option.onChange?.(value)
+    if (value === 0) {
+      this.pause()
       this.#option.onEnd?.()
     }
   }
 
-  #increment() {
-    this.#count += this.offset
-    if (this.#count >= this.target - this.#dateNow) {
-      this.#IntervalStop()
-      this.#option.onEnd?.()
-    }
-  }
-
-  #IntervalRun() {
-    clearInterval(this.#timer)
-    this.#timer = setInterval(() => {
+  #onTime() {
+    this.#rafId = raf(() => {
+      if (!this.#counting)
+        return
       const { isIncrement } = this.#state
-      isIncrement ? this.#increment() : this.#decrement()
-      this.#option.onCountChange?.(this.#count)
-    }, this.offset)
+      const cb = this.#onTime.bind(this)
+      isIncrement ? this.#increment(cb) : this.#decrement(cb)
+    })
   }
 
-  #IntervalPause() {
-    clearInterval(this.#timer)
+  #unOnTime() {}
+
+  #decrement(cb: () => void) {
+    this.#setCount(Math.max(this.#endTime - Date.now(), 0))
+    if (this.#count > 0)
+      cb()
   }
 
-  #IntervalStop() {
-    clearInterval(this.#timer)
+  #increment(cb: () => void) {
+    const diff = Date.now() - this.#startTime
+    this.#setCount(diff)
+    if (diff < this.targetTime)
+      cb()
   }
 }
