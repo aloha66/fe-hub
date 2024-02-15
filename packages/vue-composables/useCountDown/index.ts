@@ -1,21 +1,44 @@
 import type { CountDownOptions } from '@fe-hub/core'
 import { CountDown } from '@fe-hub/core'
-import { ref } from 'vue'
+import type { Ref } from 'vue'
+import { computed, ref } from 'vue'
 
-export interface useCountDownProps extends CountDownOptions {}
+interface Pausable {
 
-export function useCountDown(options?: useCountDownProps) {
+  start: () => void
+  pause: () => void
+  stop: (targetTime?: number) => void
+}
+
+export interface useCountDownProps<Controls extends boolean> extends CountDownOptions {
+  /**
+   * Expose more controls
+   *
+   * @default false
+   */
+  controls?: Controls
+}
+
+export function useCountDown(options?: useCountDownProps<false>)
+export function useCountDown(options: useCountDownProps<true>): { count: number } & Pausable
+export function useCountDown(options: useCountDownProps<boolean> = {}) {
+  const { controls = false, ...rest } = options
   const count = ref<number>(0)
-  const cd = new CountDown({ ...options, onChange(e: number) {
-    console.log(e)
+  const cd = new CountDown({ ...rest, onChange(e: number) {
     count.value = e
   } })
 
-  // return count
-  return {
-    count,
-    start: cd.start,
-    pause: cd.pause,
-    stop: cd.stop,
+  const current = computed(() => cd.parseFormat(count.value))
+
+  if (controls) {
+    return {
+      count,
+      current,
+      start: cd.start,
+      pause: cd.pause,
+      stop: cd.stop,
+    }
   }
+
+  return current
 }

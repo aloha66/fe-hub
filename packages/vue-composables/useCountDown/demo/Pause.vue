@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useCountDown } from '..'
 
-// const { count, start, pause, stop } = useCountDown({ leftTime: 10 * 1000, millisecond: true })
+const { count, start, pause, stop } = useCountDown({ leftTime: 10 * 1000, millisecond: true })
 
 const { count: count1, start: start1, pause: pause1, stop: stop1 } = useCountDown({ leftTime: 10 * 1000, isIncrement: true, millisecond: true })
 </script>
 
 <template>
-  <!-- <div>毫秒{{ count }}</div>
+  <div>毫秒{{ count }}</div>
   <div flex gap8>
     <button @click="start">
       开始
@@ -18,7 +18,7 @@ const { count: count1, start: start1, pause: pause1, stop: stop1 } = useCountDow
     <button @click="() => stop()">
       结束
     </button>
-  </div> -->
+  </div>
 
   <div>增毫秒{{ count1 }}</div>
   <div flex gap8>

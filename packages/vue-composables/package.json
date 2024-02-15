@@ -12,6 +12,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@fe-hub/core": "workspace:^"
+    "@fe-hub/core": "workspace:^",
+    "@fe-hub/shared": "workspace:^"
   }
 }

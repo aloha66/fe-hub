@@ -1,6 +1,5 @@
-import { fixDateFormatForSafari, isNumber, isString } from '@fe-hub/shared'
+import { DAY, HOUR, MINUTE, SECOND, fixDateFormatForSafari, isNumber, isString } from '@fe-hub/shared'
 import { cancelRaf, raf } from '@fe-hub/shared/async'
-import { DAY, HOUR, MINUTE, SECOND } from '@fe-hub/shared/constant'
 
 type TDate = Date | number | string | undefined
 
@@ -41,8 +40,9 @@ export interface CountDownState {
    */
   aliasTime?: string
   /**
-   * 时间间隔
+   * 添加偏移值
    * 字符串可以是aliasTime的值
+   * 如果是秒级运算 这是运算时间间隔
    */
   offset?: number | string
   /**
@@ -81,21 +81,28 @@ export class CountDown {
   #startTime = 0
 
   #rafId = 0
+  #timer: NodeJS.Timeout | 0 = 0
 
   constructor(options: CountDownOptions = {}) {
     this.#option = options
     const { onEnd: _onEnd, leftTime, targetDate, aliasTime, manual = false, isIncrement, ...rest } = options
     if (!isNumber(leftTime) && !targetDate && !aliasTime)
       throw new Error('time is undefined')
-    this.#state = { leftTime, targetDate: this.#fixDateByString(targetDate), aliasTime, manual, isIncrement, ...rest }
+    this.#state = {
+      leftTime,
+      targetDate: this.#fixDateByString(targetDate),
+      aliasTime,
+      manual,
+      isIncrement,
+      // ...this.#handleOnTimeState(),
+      ...rest,
+    }
+
+    this.setState({})
 
     this.#count = isIncrement ? 0 : this.targetTime
 
     !manual && this.start()
-  }
-
-  setState(payload: CountDownState) {
-    this.#state = { ...this.#state, ...payload }
   }
 
   /**
@@ -114,19 +121,33 @@ export class CountDown {
   get offset() {
     const { offset } = this.#state
     if (!offset)
-      return SECOND
+      return 0
     if (isNumber(offset))
       return offset
     return this.#calcAliasTime(offset)
   }
 
   get count() {
-    return this.#count
+    const { millisecond } = this.#state
+    // 秒级运算方案已经存在误差
+    // 而且是直接拿offset进行计时
+    // 在这里就不再添加offfset的值
+    const offset = millisecond ? this.offset : 0
+    return this.#count + offset
   }
 
-  #run() {
-    const { millisecond } = this.#state
-    millisecond ? this.#onTime() : this.#unOnTime()
+  setState(payload: CountDownState) {
+    this.#state = { ...this.#state, ...this.#handleOnTimeState(), ...payload }
+  }
+
+  parseFormat = (count: number) => {
+    return {
+      days: Math.floor(count / DAY),
+      hours: Math.floor(count / HOUR) % 24,
+      minutes: Math.floor(count / MINUTE) % 60,
+      seconds: Math.floor(count / SECOND) % 60,
+      milliseconds: Math.floor(count) % SECOND,
+    }
   }
 
   start = () => {
@@ -147,6 +168,20 @@ export class CountDown {
     this.pause()
     const { isIncrement } = this.#state
     this.#setCount(isIncrement ? 0 : targetTime)
+  }
+
+  #run() {
+    const { millisecond } = this.#state
+    millisecond ? this.#onTime() : this.#unOnTime()
+  }
+
+  #handleOnTimeState() {
+    const { millisecond } = this.#state
+    if (millisecond)
+      return {}
+    return {
+      offset: this.offset ? this.offset : SECOND,
+    }
   }
 
   #fixDateByString(date: TDate) {
@@ -208,7 +243,16 @@ export class CountDown {
     })
   }
 
-  #unOnTime() {}
+  #unOnTime() {
+    clearInterval(this.#timer)
+    this.#timer = setInterval(() => {
+      if (!this.#counting)
+        return
+      const { isIncrement } = this.#state
+      const cb = this.#unOnTime.bind(this)
+      isIncrement ? this.#increment(cb) : this.#decrement(cb)
+    }, this.offset)
+  }
 
   #decrement(cb: () => void) {
     this.#setCount(Math.max(this.#endTime - Date.now(), 0))
