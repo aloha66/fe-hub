@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useCountDown } from '..'
 
-const { count, start, pause, stop } = useCountDown({ leftTime: 10 * 1000, millisecond: true })
+const { count, start, pause, stop } = useCountDown({ relativeTime: 10 * 1000, millisecond: true, controls: true })
 
-const { count: count1, start: start1, pause: pause1, stop: stop1 } = useCountDown({ leftTime: 10 * 1000, isIncrement: true, millisecond: true })
+const { count: count1, start: start1, pause: pause1, stop: stop1 } = useCountDown({ relativeTime: 10 * 1000, isIncrement: true, millisecond: true, controls: true })
 </script>
 
 <template>

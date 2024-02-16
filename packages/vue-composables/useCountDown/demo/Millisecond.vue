@@ -2,11 +2,11 @@
 import { DAY, HOUR, MINUTE, SECOND } from '@fe-hub/shared'
 import { useCountDown } from '..'
 
-const second = useCountDown({ leftTime: 10 * SECOND, millisecond: true })
+const second = useCountDown({ relativeTime: 10 * SECOND, millisecond: true })
 
-const minuts = useCountDown({ leftTime: 10 * MINUTE, millisecond: true })
-const hour = useCountDown({ leftTime: 10 * HOUR, millisecond: true })
-const day = useCountDown({ leftTime: 10 * DAY, millisecond: true })
+const minuts = useCountDown({ relativeTime: 10 * MINUTE, millisecond: true })
+const hour = useCountDown({ relativeTime: 10 * HOUR, millisecond: true })
+const day = useCountDown({ relativeTime: 10 * DAY, millisecond: true })
 </script>
 
 <template>

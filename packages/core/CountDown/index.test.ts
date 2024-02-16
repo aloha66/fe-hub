@@ -9,7 +9,7 @@ describe('countDown', () => {
     vi.clearAllTimers()
   })
   it('should starts immediately by default', async () => {
-    const cd = new CountDown({ leftTime: 200 })
+    const cd = new CountDown({ relativeTime: 200 })
 
     const initial = cd.count
 
@@ -21,7 +21,7 @@ describe('countDown', () => {
     it.todo('should auto change count', () => {
       const onCountChange = (_e: number) => {}
       const mock = vi.fn(onCountChange)
-      const cd = new CountDown({ leftTime: 200, onChange: mock })
+      const cd = new CountDown({ relativeTime: 200, onChange: mock })
       expect(cd.count).toBe(0)
       expect(mock).toBeCalled()
     })
@@ -34,8 +34,8 @@ describe('countDown', () => {
   // 感觉不好写测试
   // 时间点都在变Date.now
   // describe('aliasTime', () => {
-  //   it('should has target when leftTime has value', () => {
-  //     const cd = new CountDown({ leftTime: 100 })
+  //   it('should has target when relativeTime has value', () => {
+  //     const cd = new CountDown({ relativeTime: 100 })
 
   //     expect(cd.target).not.toBeUndefined()
   //   })
@@ -45,8 +45,8 @@ describe('countDown', () => {
   //     expect(cd.target).not.toBeUndefined()
   //   })
 
-  //   it('should has target when targetDate has value', () => {
-  //     const cd = new CountDown({ targetDate: 100 })
+  //   it('should has target when abslouteTime has value', () => {
+  //     const cd = new CountDown({ abslouteTime: 100 })
   //     expect(cd.target).not.toBeUndefined()
   //   })
   // })

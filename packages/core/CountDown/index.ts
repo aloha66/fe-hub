@@ -9,7 +9,7 @@ function getNumAndUnit(time: string) {
   return [+num, unit] as const
 }
 
-function transformTargetDate(date: TDate) {
+function transformabslouteTime(date: TDate) {
   if (!date)
     return Date.now()
   if (isNumber(date))
@@ -23,11 +23,11 @@ export interface CountDownState {
   /**
    * 剩余时间（毫秒）
    */
-  leftTime?: number
+  relativeTime?: number
   /**
    * 目标时间
    */
-  targetDate?: TDate
+  abslouteTime?: TDate
   /**
    * 快速提供时间，数字是时间数值，字母是时间单位
    * 只能是以下几种类型
@@ -82,15 +82,16 @@ export class CountDown {
 
   #rafId = 0
   #timer: NodeJS.Timeout | 0 = 0
+  #isAbsoluteTime = false
 
   constructor(options: CountDownOptions = {}) {
     this.#option = options
-    const { onEnd: _onEnd, leftTime, targetDate, aliasTime, manual = false, isIncrement, ...rest } = options
-    if (!isNumber(leftTime) && !targetDate && !aliasTime)
+    const { onEnd: _onEnd, relativeTime, abslouteTime, aliasTime, manual = false, isIncrement, ...rest } = options
+    if (!isNumber(relativeTime) && !abslouteTime && !aliasTime)
       throw new Error('time is undefined')
     this.#state = {
-      leftTime,
-      targetDate: this.#fixDateByString(targetDate),
+      relativeTime,
+      abslouteTime: this.#fixDateByString(abslouteTime),
       aliasTime,
       manual,
       isIncrement,
@@ -109,13 +110,14 @@ export class CountDown {
    * 目标时间
    */
   get targetTime() {
-    const { leftTime, aliasTime, targetDate } = this.#state
-    if (isNumber(leftTime) && leftTime > 0)
-      return leftTime
+    const { relativeTime, aliasTime, abslouteTime } = this.#state
+    this.#isAbsoluteTime = false
+    if (isNumber(relativeTime) && relativeTime > 0)
+      return relativeTime
     else if (aliasTime)
       return this.#calcAliasTime(aliasTime)
-
-    return transformTargetDate(targetDate)
+    this.#isAbsoluteTime = true
+    return transformabslouteTime(abslouteTime)
   }
 
   get offset() {
@@ -131,7 +133,7 @@ export class CountDown {
     const { millisecond } = this.#state
     // 秒级运算方案已经存在误差
     // 而且是直接拿offset进行计时
-    // 在这里就不再添加offfset的值
+    // 在这里就不再添加offset的值
     const offset = millisecond ? this.offset : 0
     return this.#count + offset
   }
@@ -154,7 +156,7 @@ export class CountDown {
     if (this.#counting)
       return
     this.#counting = true
-    this.#endTime = Date.now() + this.#count
+    this.#endTime = this.#isAbsoluteTime ? this.#count : Date.now() + this.#count
     this.#startTime = this.#count ? Date.now() - this.#count : Date.now()
     this.#run()
   }
