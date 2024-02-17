@@ -18,12 +18,60 @@ describe('countDown', () => {
     expect(initial).greaterThan(cd.count)
   })
   describe('manual', () => {
-    it.todo('should auto change count', () => {
+    it('should auto change count', () => {
       const onCountChange = (_e: number) => {}
       const mock = vi.fn(onCountChange)
       const cd = new CountDown({ relativeTime: 200, onChange: mock })
+      vi.advanceTimersByTime(1000)
       expect(cd.count).toBe(0)
       expect(mock).toBeCalled()
+    })
+
+    it('should manual change count', () => {
+      const onCountChange = (_e: number) => {}
+      const mock = vi.fn(onCountChange)
+      const cd = new CountDown({ relativeTime: 200, onChange: mock, manual: true })
+      vi.advanceTimersByTime(1000)
+      expect(cd.count).toBe(200)
+      expect(mock).not.toBeCalled()
+      cd.start()
+      vi.advanceTimersByTime(1000)
+      expect(cd.count).toBe(0)
+      expect(mock).toBeCalled()
+    })
+  })
+
+  describe('pause', () => {
+    // 无法指定特定时间
+    it.todo('should pause count when invoke pause', () => {
+      const cd = new CountDown({ relativeTime: 200 })
+      vi.advanceTimersByTime(60)
+      cd.pause()
+      expect(cd.count).lessThan(200)
+      expect(cd.count).not.toBe(0)
+      cd.start()
+      vi.advanceTimersByTime(1000)
+      expect(cd.count).toBe(0)
+    })
+  })
+
+  describe('stop', () => {
+    // 无法指定特定时间
+    it.todo('should reset count when invoke stop', () => {
+      const cd = new CountDown({ relativeTime: 200 })
+      vi.advanceTimersByTime(60)
+      cd.stop()
+      expect(cd.count).toBe(200)
+    })
+
+    it.todo('should reset when invoke start after stop', () => {
+      const cd = new CountDown({ relativeTime: 200 })
+      vi.advanceTimersByTime(60)
+      cd.stop()
+      expect(cd.count).toBe(200)
+      cd.start()
+      vi.advanceTimersByTime(1000)
+      expect(cd.count).toBe(0)
     })
   })
 
