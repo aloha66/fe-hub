@@ -1,55 +1,21 @@
 <!-- eslint-disable no-console -->
 <script setup lang="ts">
-import { h, ref } from 'vue'
-import type { Axis } from '@fe-hub/core'
-import { UseDraggable } from './index'
+import { ref } from 'vue'
+import { UseCountDown } from './index'
 
-const axis = ref<Axis>('both')
+// const abslouteTime = `${new Date().getFullYear()}-12-31 23:59:59`
 
-const Com = h('div', ['被UseDraggable包裹', h('span', '的组件')])
-
-function drag(data: any, e: any) {
-  console.log('data:', data, e)
-}
-
-function stop(data: any, e: any) {
-  console.log('stop', data, e)
-}
+const time = ref(15000)
 </script>
 
 <template>
-  <UseDraggable class="box" @drag="drag">
-    <Com />
-  </UseDraggable>
-  <UseDraggable :axis="axis" @stop="stop">
-    <div class="box">
-      <div flex justify-evenly gap1>
-        <button @click="axis = 'both'">
-          both
-        </button>
-        <button @click="axis = 'x'">
-          x
-        </button>
-        <button @click="axis = 'y'">
-          y
-        </button>
-      </div>
-      有最外层div包裹的组件，会复用div
-    </div>
-  </UseDraggable>
-
-  <UseDraggable class="box">
-    <div class="test">
-      eee
-    </div>
-    没有最外层div会加一层div
-  </UseDraggable>
+  <UseCountDown v-slot="{ count, current: { seconds } }" :relative-time="time">
+    {{ count }}
+    {{ seconds }}
+    <!-- <div>{{ current }}</div> -->
+    <!-- <div>{{ current.seconds }}</div> -->
+  </UseCountDown>
+  <button @click="time = 60000">
+    change
+  </button>
 </template>
-
-<style scoped>
-.box {
-    width: 200px;
-    height: 200px;
-    border: 1px solid #000;
-}
-</style>

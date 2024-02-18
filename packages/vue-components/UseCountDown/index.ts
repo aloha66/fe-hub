@@ -1,13 +1,12 @@
-import type { DraggableOptions } from '@fe-hub/core'
+import type { CountDownOptions } from '@fe-hub/core'
 import { removeUndefined } from '@fe-hub/shared'
-import type { RenderableComponent } from '@fe-hub/vue-components/type'
 import { useCountDown } from '@fe-hub/vue-composables'
-import { cloneVNode, defineComponent, h, mergeProps, ref, watch } from 'vue'
+import { defineComponent, reactive, watch } from 'vue'
 
-export interface UseDraggableProps extends DraggableOptions, RenderableComponent {
+export interface UseCountDownProps extends CountDownOptions {
 }
 
-export const UseCountDown = /* #__PURE__ */ defineComponent<UseDraggableProps>({
+export const UseCountDown = /* #__PURE__ */ defineComponent<UseCountDownProps>({
   name: 'UseCountDown',
   props: [
     'relativeTime',
@@ -22,35 +21,16 @@ export const UseCountDown = /* #__PURE__ */ defineComponent<UseDraggableProps>({
     'onChange',
   ] as unknown as undefined,
   setup(props, { slots }) {
-    const data = useCountDown({ ...props, controls: true })
-    // watch(props, (newProps) => {
-    //   setState({ ...removeUndefined(newProps) })
-    // })
+    // 没有reactive，解构的时候会丢失响应式
+    const data = reactive(useCountDown({ ...props, controls: true }))
+
+    watch(props, (newProps) => {
+      data.setState({ ...removeUndefined(newProps) })
+    })
 
     return () => {
       if (slots.default)
         return slots.default(data)
     }
-    // return () => {
-    //   if (slots.default) {
-    //     const _slots = slots.default({ customData: 2 }).filter(item => item.type !== Comment)
-
-    //     const extraProps = {
-    //       ref: el,
-    //       style: 'touch-action:none;',
-
-    //     }
-
-    //     // 合并两个style
-    //     const merged = mergeProps(extraProps, { style: style.value })
-
-    //     const isSingle = _slots.length === 1
-    //     if (isSingle)
-
-    //       return cloneVNode(_slots[0], merged)
-
-    //     return h(props.as || 'div', merged, _slots)
-    //   }
-    // }
   },
 })
