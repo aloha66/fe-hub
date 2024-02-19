@@ -8,7 +8,7 @@ const watch = process.argv.includes('--watch')
 export async function build() {
   await runIfNotDry('pnpm run clean')
 
-  await runIfNotDry(`pnpm run build:rollup${watch ? ' -- --watch' : ''}`)
+  await runIfNotDry(`pnpm run build:rollup${watch ? ' --watch' : ''}`)
 
   console.log(pico.bgGreen(`${pico.white('✓')} [build] successful.\n`))
 }

@@ -24,7 +24,8 @@
     "taze:major": "taze major -w",
     "taze:minor": "taze minor -w",
     "test": "vitest",
-    "update": "nr -C packages/metadata update && esno scripts/update.ts"
+    "update": "nr -C packages/metadata update && esno scripts/update.ts",
+    "watch": "esno scripts/build-run.ts --watch"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.6.3",

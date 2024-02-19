@@ -1,5 +1,4 @@
-import { DAY, HOUR, MINUTE, SECOND, fixDateFormatForSafari, isNumber, isString } from '@fe-hub/shared'
-import { cancelRaf, raf } from '@fe-hub/shared/async'
+import { DAY, HOUR, MINUTE, SECOND, cancelRaf, fixDateFormatForSafari, isNumber, isString, raf } from '@fe-hub/shared'
 
 type TDate = Date | number | string | undefined
 
@@ -70,6 +69,7 @@ export interface CountDownOptions extends CountDownState {
   onChange?: (time: number) => void
 }
 
+// TODO 转换是否顺计时有bug
 export class CountDown {
   #state: CountDownState
   #option: CountDownOptions
@@ -139,6 +139,10 @@ export class CountDown {
   }
 
   setState(payload: CountDownState) {
+    const { isIncrement } = payload
+    if (isIncrement !== undefined)
+      this.#count = isIncrement ? 0 : this.targetTime
+
     this.#state = { ...this.#state, ...this.#handleOnTimeState(), ...payload }
   }
 
