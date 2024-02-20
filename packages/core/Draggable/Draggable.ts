@@ -3,8 +3,9 @@ import type { DraggableCoreOptions } from '../DraggableCore'
 import { DraggableCore } from '../DraggableCore'
 import type { ControlPosition, DraggableEventHandler } from '../DraggableCore/type'
 import { canDragX, canDragY, createDraggableData, getBoundPosition } from '../DraggableCore/position'
-import type { Handler } from '..'
-import { EventBus } from '..'
+
+import type { Handler } from '../EventBus'
+import { EventBus } from '../EventBus'
 import type { DraggableState } from './type'
 
 interface InternalState {

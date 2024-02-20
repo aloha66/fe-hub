@@ -1,5 +1,5 @@
 import { TIMEOUT } from './constant'
-import { inBrowser } from '.'
+import { inBrowser } from './is'
 
 // 导出PromiseFn类型，它是一个函数，接受一个泛型T，返回一个Promise<R>
 export type PromiseFn<T extends any[], R> = (...args: T) => Promise<R>
