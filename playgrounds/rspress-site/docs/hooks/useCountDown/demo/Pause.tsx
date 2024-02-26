@@ -25,7 +25,7 @@ export default () => {
         </button>
       </div>
 
-      <button onClick={() => setIsIncrement(prev => !prev)}>{isIncrement ? '顺计时1' : '倒计时2'}</button>
+      <button onClick={() => setIsIncrement(prev => !prev)}>{isIncrement ? '顺计时' : '倒计时'}</button>
     </>
   )
 }
