@@ -23,9 +23,6 @@
 https://github.com/pnpm/pnpm/issues/2412#issuecomment-1545298869
 pnpm install --ignore-workspace
 
-7. "@fe-hub/react-hooks": "link:../../packages/react-hooks"
-把link改成file后 pnpm-workspace报错
-
 ## 疑点
 
 1. TODO props的变化时机
