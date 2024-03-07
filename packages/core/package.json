@@ -7,8 +7,15 @@
   "license": "MIT",
   "keywords": [],
   "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs"
+    },
+    "./*": "./*"
+  },
   "main": "index.ts",
-  "module": "./index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

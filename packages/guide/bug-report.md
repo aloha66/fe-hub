@@ -26,3 +26,4 @@ pnpm install --ignore-workspace
 ## 疑点
 
 1. TODO props的变化时机
+2. 不知道为什么项目的贡献指导，只叫我们pnpm dev。实际上，在package.json导出了exports和module等字段后（main就失效了），需要运行脚本监听文件重新打包 --watch
