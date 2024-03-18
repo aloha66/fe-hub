@@ -22,6 +22,7 @@ export default antfu(
       'semi': ['error', 'never'],
       'jsx-quotes': ['error', 'prefer-single'],
       'no-restricted-syntax': 'off',
+      'complexity': ['error', 10],
     },
   },
   // {
