@@ -62,3 +62,34 @@ export function cancelRaf(id: number) {
   if (inBrowser)
     cancelAnimationFrame(id)
 }
+
+/**
+ * 让步主线程
+ * @returns
+ */
+export function yieldToMain() {
+  return new Promise(resolve => setTimeout(resolve, 0))
+}
+
+export async function reduceLongTimeTask<T extends Function>(...tasks: T[]) {
+  const _tasks = [...tasks]
+
+  let deadline = performance.now() + 50
+
+  function doTask(task?: Function) {
+    if (typeof task === 'function')
+      task()
+  }
+
+  while (_tasks.length > 0) {
+    const task = tasks.shift()
+    // @ts-expect-error let me do it
+    if (navigator.scheduling.isInputPending || performance.now() >= deadline) {
+      await yieldToMain()
+      deadline += 50
+      continue
+    }
+
+    doTask(task)
+  }
+}
