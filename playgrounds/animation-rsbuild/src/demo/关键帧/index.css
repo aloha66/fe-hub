@@ -1,0 +1,59 @@
+.content {
+  width: 100px;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  background-color: #09f;
+  animation: animate 3s linear infinite alternate;
+}
+
+/*
+这是使用
+*/
+@layer  scale02, scale01, move,;
+
+
+/*这是定义*/
+@layer scale01 {
+  @keyframes animate {
+    to {
+      scale: 2;
+    }
+  }
+}
+
+@layer scale02 {
+  @keyframes animate {
+    to {
+      scale: 3;
+    }
+  }
+}
+
+@layer move {
+  @keyframes animate {
+    0% {
+      scale: 1;
+      translate: 0 0;
+    }
+
+    25% {
+      scale: 1.25;
+      translate: 100px -100px;
+    }
+
+    50% {
+      scale: 1.5;
+      translate: 200px 0;
+    }
+
+    75% {
+      scale: 1.75;
+      translate: 300px -100px;
+    }
+
+    100% {
+      scale: 2;
+      translate: 400px 0;
+    }
+  }
+}
