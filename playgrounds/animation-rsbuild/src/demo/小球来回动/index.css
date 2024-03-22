@@ -1,0 +1,26 @@
+.content {
+  position: relative;
+  /*模拟宽度不固定，百分比*/
+  width: 300px;
+  height: 200px;
+  border: 1px solid #aaa;
+}
+
+.item {
+  position: absolute;
+  width: 50px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-color: pink;
+  left: 0;
+  top: 0;
+  animation: move 2s linear infinite;
+}
+
+
+@keyframes move {
+  50% {
+    /*这里的百分比是相当于自己的*/
+    transform: translateX(calc(var(--w) - 100%));
+  }
+}

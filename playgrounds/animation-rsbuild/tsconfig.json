@@ -2,13 +2,13 @@
   "compilerOptions": {
     "target": "ES2020",
     "lib": ["DOM", "ES2020"],
+    "useDefineForClassFields": true,
     "module": "ESNext",
-    "strict": true,
-    "skipLibCheck": true,
-    "isolatedModules": true,
-    "resolveJsonModule": true,
     "moduleResolution": "bundler",
-    "useDefineForClassFields": true
+    "resolveJsonModule": true,
+    "strict": true,
+    "isolatedModules": true,
+    "skipLibCheck": true
   },
-  "include": ["src"]
+  "include": ["src", "env.d.ts"]
 }
